@@ -1,3 +1,8 @@
+---
+layout: default
+title: Linked Interactive Small Multiples
+---
+
 <h1>Linked Interactive Small Multiples</h1>
 
 <p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate chart to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data. A chorus of little stories that can help tell a bigger one.</p>
@@ -32,17 +37,22 @@ There are five broad categories of linked small multiple interactions that we wi
 </ol>
 </p>
 
-<p>To clarify a bit, we are talking about interactions that affect multiple small multiples at the same time, so tooltips don't count. For small multiples that are interactive at the individual chart level, check out my <a href="http://vallandingham.me/small_multiples_with_details.html">small multiples with details on demand</a> tutorial.</p>
+<p>To clarify a bit, we are focusing on interactions that affect all or many of the small multiple plots at the same time, so tooltips don't count. But if you are interested in small multiples that are interactive at the individual chart level, check out my <a href="http://vallandingham.me/small_multiples_with_details.html">small multiples with details on demand</a> tutorial for one such example.</p>
 
 <h3>Updateable</h3>
 
-<p>This is a common approach where the data is filtered or processed in some way and then the small multiples are updated to reflect this new data.</p>
+<p>This is a common approach where the data is filtered or processed in some way and then the small multiples are updated to reflect this new data. The FlowingData visualization <a href="http://projects.flowingdata.com/timeuse/">How Americans Spend Their Day</a>, that served as the demo for the last D3 small multiples tutorial, is updateable. The filters update the plots with different subsets of the data to provide a greater exploration experience.</p>
 
 <a href=""><img src="img/timeuse.png"></a>
 
-<p>Another Great example of an updateable small multiple is part of a <a href="http://githut.info/">GitHut</a>, a visualization of programming language popularity on Github. Here, you can toggle between repository count and percent of total for each language.</p>
+<p>Another Great example of an updateable small multiple is part of a <a href="http://githut.info/">GitHut</a>, a visualization of programming language popularity on Github.</p> 
 
 <a href=""><img src="img/githut.png"></a>
+
+<p>Here, you can toggle between repository count and percent of total for each language, providing both absolute and relative metrics to compare.</p>
+
+<h3>Reorderable</h3>
+
 
 [sourcecode language="javascript"]
 something <- function()
