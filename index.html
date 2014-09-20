@@ -1,79 +1,51 @@
-<!DOCTYPE html>
-<html>
+<h1>Linked Interactive Small Multiples</h1>
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Small mults tutorial : ">
+<p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate chart to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data. A chorus of little stories that can help tell a bigger one.</p>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+<p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting</a> (which is when some data is obscured or occluded because there are too many things being plotted). Compared to animation, small multiples present all of the data at once which makes it easier for viewers to naturally compare each facet with others instead of trying to flip back and forth between views.</p>
 
-    <title>Small mults tutorial</title>
-  </head>
+<p>FlowingData has covered small multiples and their uses many times over. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
 
-  <body>
+<p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right?</span>
+But even with this content around small multiples, a visualization as versatile as this has plenty more to give.</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/vlandham/small_mults_tutorial">View on GitHub</a>
+<p>In this tutorial we are going to take another look at interactive small multiples and explore more possibilities available when we bring this visual to the web.</p>
 
-          <h1 id="project_title">Small mults tutorial</h1>
-          <h2 id="project_tagline"></h2>
+<p>Specially, I'd like to talk about <strong>linked</strong> small multiples. Here, all the plots in the small multiple are linked and interact together in some way.</p>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/vlandham/small_mults_tutorial/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/vlandham/small_mults_tutorial/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+<p>Before we get started with our own, it might be valuable to look at some successful examples of linked small multiples out there to get a sense for what kind of interactions are possible, and how they are getting used.</p>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<h2>Linked Small Multiple Examples</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>I've broken down the domain of linked small multiples into four types of interactions. Mostly, this just allows me to make up silly names for the interactions (which probably already have real names anyways), but it helps frame the conversation a bit.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>
+<span class="tip">And if you have a better name for one or more of these categories from the vis or UI/UX world, please let me know!</span>
+There are five broad categories of linked small multiple interactions that we will look at:
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<ol>
+  <li>Updateable</li>
+  <li>Reorderable</li>
+  <li>Highlightable</li>
+  <li>Scrubbable</li>
+  <li>Brushable</li>
+</ol>
+</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>To clarify a bit, we are talking about interactions that affect multiple small multiples at the same time, so tooltips don't count. For small multiples that are interactive at the individual chart level, check out my <a href="http://vallandingham.me/small_multiples_with_details.html">small multiples with details on demand</a> tutorial.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h3>Updateable</h3>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>This is a common </p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+[sourcecode language="javascript"]
+something <- function()
+blah blah blah
+yabba = dabba + 1
+oink poink
+return poo
+[/sourcecode]
+<br />
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Small mults tutorial maintained by <a href="https://github.com/vlandham">vlandham</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
-</html>
+625px wide
