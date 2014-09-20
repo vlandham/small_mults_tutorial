@@ -33,7 +33,6 @@ There are five broad categories of linked small multiple interactions that we wi
   <li>Reorderable</li>
   <li>Highlightable</li>
   <li>Scrubbable</li>
-  <li>Brushable</li>
 </ol>
 </p>
 
@@ -47,7 +46,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <p>Another Great example of an updateable small multiple is part of a <a href="http://githut.info/">GitHut</a>, a visualization of programming language popularity on Github.</p> 
 
-<a href=""><img src="img/githut.png"></a>
+<img src="img/githut.png">
 
 <p>Here, you can toggle between repository count and percent of total for each language, providing both absolute and relative metrics to compare.</p>
 
@@ -55,7 +54,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <p>With reorderable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer pick out different patterns in the data.</p>
 
-<img src="img/githut.png">
+<img src="img/kepler.png">
 
 <p>Still one of my favorite interactive small multiples, <a href="http://13pt.com/">Jonathan Corum's</a> always updating <a href="">Kepler's Tally of Planets</a> allows the viewer to reorder by discovery date or system size. This gives the viewer a historical perspective, as well as one that highlights the incredible diversity in the systems.</p>
 
@@ -72,6 +71,34 @@ There are five broad categories of linked small multiple interactions that we wi
 <img src="img/eu_tracker.png"/>
 
 <p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country. Nice!</p>
+
+<h3>Scrubbable</h3>
+
+<p>Now we're cooking with fire! Or at least interesting interactions. Scrubbable small multiples display the values of individual data points. You've seen this before in line charts and bar charts, but with a scrubbable small multiple, you get values in all your plots.</p>
+
+<img src="img/tax_burden.png"/>
+
+<p>I first saw this in 2012 in the New York Times piece about <a href="http://www.nytimes.com/interactive/2012/11/30/us/tax-burden.html">America's Tax Burden</a>, but now it's everywhere.</p>
+
+<p>Propublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance payout exposé</a> uses this technique and was praised for it by <a href="http://junkcharts.typepad.com/junk_charts/2014/07/a-small-step-for-interactivity.html">Junk Chart's Kaiser Fung</a> (and that's high praise).</p>
+
+<img src="img/ambulance.png"/>
+
+<p>And most recently, scrubbable small multiples were used to help explain the <a href="">inefficiencies of birth control methods</a>. The visual provides great within-plot comparisons, as well as between-plot comparisons with this approach.</p>
+
+<img src="img/birth_control.png"/>
+
+<h3>Bonus: Brushable</h3>
+
+<p>
+<span class="tip">I'm sure I missed more types of interactions. Have one and want to tell me? Just email it to me or write it in the comments.</span>
+I did find a demonstration from Mike Bostock of a scrubbable + highlightable interaction where points in a small multiples of scatter plots were <a href="http://bl.ocks.org/mbostock/4063663">selectable in two dimensions</a>. However, while this type of 'brushable' interaction would certainly be useful in some situations, so far I haven't found it used in the wild.</p>
+
+<h2>Our Own Scrubbable Highlightable Reorderable Small Multiple</h2>
+
+<p>Ok, enough examples, let's get to the coding.</p>
+
+<p>Many of these interactions could be used together to make even more interesting interactions, and that's what we are going to try in this tutorial. Let's start with a basic small multiples built in D3 and then add in some of these interactions to see how they work.</p>
 
 [sourcecode language="javascript"]
 something <- function()
