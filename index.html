@@ -43,7 +43,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <p>This is a common approach where the data is filtered or processed in some way and then the small multiples are updated to reflect this new data. The FlowingData visualization <a href="http://projects.flowingdata.com/timeuse/">How Americans Spend Their Day</a>, that served as the demo for the last D3 small multiples tutorial, is updateable. The filters update the plots with different subsets of the data to provide a greater exploration experience.</p>
 
-<a href=""><img src="img/timeuse.png"></a>
+<img src="img/timeuse.png">
 
 <p>Another Great example of an updateable small multiple is part of a <a href="http://githut.info/">GitHut</a>, a visualization of programming language popularity on Github.</p> 
 
@@ -53,6 +53,25 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <h3>Reorderable</h3>
 
+<p>With reorderable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer pick out different patterns in the data.</p>
+
+<img src="img/githut.png">
+
+<p>Still one of my favorite interactive small multiples, <a href="http://13pt.com/">Jonathan Corum's</a> always updating <a href="">Kepler's Tally of Planets</a> allows the viewer to reorder by discovery date or system size. This gives the viewer a historical perspective, as well as one that highlights the incredible diversity in the systems.</p>
+
+<h3>Highlightable</h3>
+
+<p>Here, part or all of the visualization is highlighted to bring a visual element to the forefront for comparison, or connect the plots in some way.</p>
+
+<p>In the Upshot's <a href="http://www.nytimes.com/2014/04/23/upshot/the-american-middle-class-is-no-longer-the-worlds-richest.html?abt=0002&abg=1">look at the American middle class</a>, they provide a wonderful small multiple to compare the US with other countries. You can mouse over one of the lines to highlight that country's data in each of the plots.</p>
+
+<img src="img/middle_class.png">
+
+<p>And recently, the Financial Times has provided an interesting twist on this idea in their <a href="http://blogs.ft.com/ftdata/2014/08/29/eu-unemployment-tracker/">EU unemployment tracker</a>.
+
+<img src="img/eu_tracker.png"/>
+
+<p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country. Nice!</p>
 
 [sourcecode language="javascript"]
 something <- function()
