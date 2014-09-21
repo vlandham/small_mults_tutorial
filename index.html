@@ -84,7 +84,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <img src="img/ambulance.png"/>
 
-<p>And most recently, scrubbable small multiples were used to help explain the <a href="">inefficiencies of birth control methods</a>. The visual provides great within-plot comparisons, as well as between-plot comparisons with this approach.</p>
+<p>And most recently, scrubbable small multiples were used to help explain the <a href="http://www.nytimes.com/interactive/2014/09/14/sunday-review/unplanned-pregnancies.html?smid=tw-share">inefficiencies of birth control methods</a>. The visual provides great within-plot comparisons, as well as between-plot comparisons with this approach.</p>
 
 <img src="img/birth_control.png"/>
 
@@ -96,9 +96,57 @@ I did find a demonstration from Mike Bostock of a scrubbable + highlightable int
 
 <h2>Our Own Scrubbable Highlightable Reorderable Small Multiple</h2>
 
-<p>Ok, enough examples, let's get to the coding.</p>
+<p>Ok, enough examples, let's get coding.</p>
 
-<p>Many of these interactions could be used together to make even more interesting interactions, and that's what we are going to try in this tutorial. Let's start with a basic small multiples built in D3 and then add in some of these interactions to see how they work.</p>
+<p>Many of these interactions could be used together to make even more interesting interactions, and that's what we are going to try in this tutorial. Let's start with a basic small multiples built in <a href="http://d3js.org/">D3.js</a> and then add in some of these interactions to see how they work.</p>
+
+<p>You can <a href="">download the code</a> and follow along as we build up the visualization. It is again written in <a href="">CoffeeScript</a>, but I've also compiled it into straight JavaScript and saved that off - in case you don't want to give CoffeeScript a try.</p>
+
+<p>If you have python installed (and if you are on a Mac or Linux box, you should have python by default), you can open up the code directory in your Terminal and run python's simple http server.</p>
+
+<p>First, you are going to want to check the python version you have:</p>
+
+<pre>
+  [sourcecode language="bash"]
+  python --version
+  [/sourcecode]
+  <br />
+</pre>
+
+<p>If it is <strong>python 2.x</strong>, you can run the web server with the command:</p>
+<pre>
+  [sourcecode language="bash"]
+  # start web server with python 2
+  python -m SimpleHTTPServer
+  [/sourcecode]
+  <br />
+</pre>
+<p>If it is <strong>python 3.x</strong>, the syntax is a bit different:</p>
+<pre>
+  [sourcecode language="bash"]
+  # start web server with python 3
+  python -m http.server
+  [/sourcecode]
+  <br />
+</pre>
+
+<p>Once you have the server running in the code's directory, you should be able to open up <a href="http://0.0.0.0:8000">http://0.0.0.0:8000</a> in your web browser and see the visualization.</p>
+
+<p>
+<span class="tip">If anyone has problems on Windows getting started, let me know.</span>
+If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier should have you covered with his <a href="http://www.jeromecukier.net/blog/2012/09/04/getting-to-hello-world-with-d3/">Getting to Hello World with d3</a> post.</p>
+
+<h3>The Data</h3>
+
+<h3>Loading the Data</h3>
+
+<p>Ok, first the easiest part of any D3 project: loading the data. Well, the loading part is easy, but some times getting it into the format you want after you load it can be a bit of a pain.</p>
+
+<p></p>
+
+<p></p>
+
+<p>The binding methodology of </p>
 
 [sourcecode language="javascript"]
 something <- function()

@@ -1,13 +1,38 @@
 ---
 layout: default
-title: Linked Interactive Small Multiples
+title: Interactive Timelines
 ---
 
 <h1>Interactive Timelines</h1>
 
 
-<span class="tip">Warning: unnecessary Talking Heads reference.</span>
-<p>Time isn't holding us. Time isn't after us. Time isn't holding us. But time is a pretty big part of most data sets.</p>
+<span class="tip">Starting with a Talking Heads reference is always a good sign, right?</span>
+<p>Time isn't holding us. Time isn't after us. Time isn't holding us. But time is a pretty big part of many data sets. Time can be present in the data directly, or inferred by context, or implied by how the data was collected or aggregated. For these reasons, either explicitly or implicitly, we are constantly dealing with the concept of time in visualizations.</p>
 
-<p>Either explicitly or implicitly, we are constantly dealing with the concept of time in visualizations. A standard approach to </p> 
+<p>In many instances, line charts or bar charts with time as the value along the x-axis is the way to go. These displays typically work for aggregate views of the data. You are looking at counts of clicks, or average cost, or total spend over time. But sometimes, you want to present the events themselves individually as the main view of the dataset. That is where timelines can come in handy.</p>
 
+<p>In this tutorial, we are going to look at a few variants of the timeline, going from simple to slightly more complex. We will also add a bit of interactivity into the mix.</p>
+
+<h3>Datasets</h3>
+
+<p>I believe these techniques might be worth a try if your data matches up with a few conditions. First, date or time is present as one of the main fields of your dataset. Second, the data events can be grouped together in some logical fashion. This grouping will serve as the rows of the timeline display. People, places, things are all good groupings. I guess if all your data points fall into one bucket, then you would just have one row to display in the following visualizations - which wouldn't be the end of the world.</p>
+
+<p>With these prerequisites in mind, all the datasets used in this tutorial have the same column names:</p>
+
+<code>
+  date, group, type, title, description
+</code>
+
+<p>Your data may have different fields, but a bit of <code>d3.nest</code> should get everyone on the same page.</p>
+
+<h3>Building your Data Nest</h3>
+
+<p>d3.nest is primarily a hierarchy creation tool, as indicated by its name. But, you can also think of it as a data transformation and summarization tool. A sort of mapping and reducing function in the context of nested data. It's pretty fun and pretty powerful for having such a small API. Let's take a look at how to use it.</p>
+
+<h3>A Basic Timeline</h3>
+
+<p>Sometimes you just want a little visual to indicate when events happened. You could jump straight into the major leagues and use something like the <a href="http://timeline.knightlab.com/">amazing Timeline JS</a> created by Knight Lab, but, while very very impressive, that may feel a bit overkill.</p>
+
+<p>If you have just a few points to look at, you might consider this basic timeline display.</p>
+
+<p>The data for this visualization? I'm glad you asked. That's just a little fictional timeline I prepared for a pirate children's story I'm writing: <a href="">Captain Z and the Treasure of Castle Island</a>. Believe me, it's twice as interesting as it sounds! Go check it out and have an excuse to talk like a pirate to your kids for days.</p>
