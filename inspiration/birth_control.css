@@ -1,0 +1,227 @@
+/*
+  Examples of importing CSS for concatenation
+
+  @import url("custom.css");     Imports src/custom.css
+*/
+.story.theme-main .story-header .story-meta .story-heading {
+  text-align: center;
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media screen and (min-width: 855px) {
+  .story.theme-main .story-header .story-meta .story-heading {
+    max-width: 570px;
+  }
+}
+@media screen and (min-width: 1050px) {
+  .story.theme-main .story-header .story-meta .story-heading {
+    font-size: 42px;
+    line-height: 51px;
+    font-weight: 400;
+  }
+}
+@media only screen and (max-width: 719px) {
+  .story.theme-main .story-header .story-meta .story-heading {
+    text-align: left;
+  }
+}
+.story.theme-main .story-header .story-meta .byline-dateline {
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+@media only screen and (max-width: 719px) {
+  .story.theme-main .story-header .story-meta .byline-dateline {
+    text-align: left;
+    margin-left: 0;
+  }
+}
+.story.theme-main .interactive-leadin.summary {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+#g-pregnancies {
+  text-align: center;
+}
+#g-pregnancies .g-intro {
+  margin-bottom: 30px;
+  text-align: left;
+  width: 49.5%;
+  display: inline-block;
+  vertical-align: top;
+}
+#g-pregnancies .g-intro.left p {
+  padding-right: 20px;
+}
+#g-pregnancies .g-intro.right p {
+  padding-left: 20px;
+}
+@media screen and (max-width: 1050px) {
+  #g-pregnancies .g-intro {
+    width: 100%;
+    display: block;
+    margin-bottom: 16px;
+  }
+  #g-pregnancies .g-intro.left p {
+    padding-right: 0px;
+  }
+  #g-pregnancies .g-intro.right p {
+    padding-left: 0px;
+  }
+}
+#g-pregnancies .g-caption {
+  text-align: center;
+  font: bold 16px / 1.2 'nyt-franklin', Arial, sans-serif;
+  margin-bottom: 20px;
+}
+#g-pregnancies .g-caption > span {
+  display: none;
+}
+@media only screen and (min-width: 720px) and (max-width: 854px) {
+  #g-pregnancies .g-caption {
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+#g-pregnancies.group-a > .g-caption > span {
+  display: inline;
+}
+#g-pregnancies .g-panel {
+  text-align: left;
+  position: relative;
+  display: inline-block;
+  margin: 0 0 20px;
+  width: 20%;
+  height: 300px;
+}
+@media only screen and (max-width: 449px) {
+  #g-pregnancies .g-panel {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 450px) and (max-width: 719px) {
+  #g-pregnancies .g-panel {
+    width: 50%;
+    height: 250px;
+  }
+}
+@media only screen and (min-width: 720px) and (max-width: 854px) {
+  #g-pregnancies .g-panel {
+    width: 33%;
+  }
+}
+@media only screen and (min-width: 855px) and (max-width: 1049px) {
+  #g-pregnancies .g-panel {
+    width: 25%;
+  }
+}
+#g-pregnancies .g-panel .g-caption {
+  position: absolute;
+  left: 15px;
+  top: 0;
+  z-index: 5;
+  margin: 0;
+  color: black;
+  font: 300 14px / 1.2 'nyt-franklin', Arial, sans-serif;
+}
+#g-pregnancies .g-panel + .g-panel svg .zones .zone .label {
+  display: none;
+}
+#g-pregnancies svg text {
+  font: 300 14px / 1.2 'nyt-franklin', Arial, sans-serif;
+}
+#g-pregnancies svg text.value {
+  font-weight: bold;
+}
+#g-pregnancies svg text.after-years,
+#g-pregnancies svg text.typical-use {
+  font-size: 12px;
+}
+#g-pregnancies svg text.legend {
+  font: 400 12px / 1.2 'nyt-franklin', Arial, sans-serif;
+  text-transform: uppercase;
+  text-anchor: middle;
+}
+#g-pregnancies svg .method path {
+  stroke: black;
+  fill: none;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  opacity: 1;
+}
+#g-pregnancies svg .method path.area {
+  stroke: none;
+  fill: white;
+  opacity: 0;
+}
+#g-pregnancies svg .method path.perfect {
+  stroke-width: 1px;
+  stroke-opacity: 1;
+  stroke-dasharray: 4,4;
+}
+#g-pregnancies svg .zones .zone rect {
+  stroke: none;
+  fill: gray;
+  opacity: 0.3;
+}
+#g-pregnancies svg .zones .zone rect.z-50-100 {
+  opacity: 0.04;
+}
+#g-pregnancies svg .zones .zone rect.z-25-50 {
+  opacity: 0.04;
+}
+#g-pregnancies svg .zones .zone rect.z-0-25 {
+  opacity: 0.04;
+}
+#g-pregnancies svg .zones .zone line {
+  stroke: black;
+  opacity: 0.2;
+  shape-rendering: crispEdges;
+}
+#g-pregnancies svg .zones .zone line.z-0-25 {
+  opacity: 0;
+}
+#g-pregnancies svg .zones .zone .label {
+  font: 400 11px / 1.2 'nyt-franklin', Arial, sans-serif;
+  text-anchor: end;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+#g-pregnancies svg .axis .grid-line line {
+  shape-rendering: crispEdges;
+  fill: none;
+  stroke-opacity: .08;
+  stroke: #000;
+}
+#g-pregnancies svg .axis .grid-line text {
+  font: 300 12px / 1.2 'nyt-franklin', Arial, sans-serif;
+  fill: #000;
+}
+#g-pregnancies svg .axis .grid-line.black line {
+  stroke: gray;
+  stroke-dasharray: 3,3;
+}
+#g-pregnancies svg .axis.x text {
+  text-anchor: middle;
+}
+#g-pregnancies svg .axis.y text {
+  text-anchor: end;
+}
+#g-pregnancies svg .axis.y line {
+  stroke-opacity: 1;
+}
+#g-pregnancies svg rect.bg {
+  opacity: 0;
+}
+#g-pregnancies svg:hover .axis.x .grid-line.hover line {
+  stroke-opacity: 0.5;
+}
+#g-pregnancies svg:hover .axis.x .grid-line.hover text {
+  font-weight: 700;
+  font-size: 13px;
+}
+
