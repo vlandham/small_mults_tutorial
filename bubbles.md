@@ -14,3 +14,12 @@ Here we will add the element of time to our beloved Bubble Cloud.
 <p>Bubbles aren't always the best visual encoding for your data. While they are fun and can look good, there is a limit to how well people can decode differences in values when they are encoded in bubbles. Just keep this in mind as you experiment - and stay safe.</p>
 <p>Kaiser Fung <a href="http://junkcharts.typepad.com/junk_charts/bubble_chart/">has plenty more to say on the subject</a></p>
 </div>
+
+
+## Pre-built Slider
+
+https://github.com/turban/d3.slider/blob/master/d3.slider.js
+
+http://thematicmapping.org/playground/d3/d3.slider/
+
+https://github.com/EOX-A/d3.TimeSlider
