@@ -135,6 +135,7 @@ SmallMultiples = () ->
         .style("pointer-events", "none")
         .attr("dy", 13)
         .attr("y", height)
+        .attr("x", 0)
         .text((c) -> xValue(c.values[0]).getFullYear())
 
       lines.append("text")
@@ -143,6 +144,7 @@ SmallMultiples = () ->
         .style("pointer-events", "none")
         .attr("dy", 13)
         .attr("y", height)
+        .attr("x", width)
         .text((c) -> xValue(c.values[c.values.length - 1]).getFullYear())
 
       # Add a circle and caption to fill in
@@ -175,7 +177,7 @@ SmallMultiples = () ->
   # ---
   mouseover = () ->
     circle.attr("opacity", 1.0)
-    d3.select(".static_year").classed("hidden", true)
+    d3.selectAll(".static_year").classed("hidden", true)
     mousemove.call(this)
 
   # ---
@@ -205,7 +207,7 @@ SmallMultiples = () ->
   # ---
   # ---
   mouseout = () ->
-    d3.select(".static_year").classed("hidden", false)
+    d3.selectAll(".static_year").classed("hidden", false)
     circle.attr("opacity", 0)
     caption.text("")
     curYear.text("")
