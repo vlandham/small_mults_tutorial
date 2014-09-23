@@ -25,7 +25,7 @@ dates_df$mon_year <- paste(dates_df$month, dates_df$year, sep = "-")
 askmefi_dates <- cbind(askmefi, dates_df)
 askmefi_months <- summarise(group_by(askmefi_dates, mon_year, category), n = n())
 
-write.table(askmefi_months, file = "", row.names = FALSE, col.names = TRUE, sep = "\t")
+write.table(askmefi_months, file = "askmefi_category_month.tsv", row.names = FALSE, col.names = TRUE, sep = "\t")
 
 
 p <- ggplot(askmefi, aes(x = category)) + geom_histogram(binwidth = 1)

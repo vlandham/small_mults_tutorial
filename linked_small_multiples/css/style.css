@@ -1,0 +1,71 @@
+
+body, input, textarea {
+  /* font-family: Georgia, "Times New Roman", Serif; */
+}
+
+h1 {
+  font-size: 26px;
+  padding: 0px 0 5px 0;
+  line-height: 1.2em;
+  color: #000;
+  margin-bottom: 0px;
+}
+
+#lead {
+  clear: both;
+  font-size: 1.1em;
+  line-height: 1.7em;
+  font-family: Georgia,serif;
+}
+
+#lead p {
+font-family: Georgia,Palatino,serif;
+font-size: 1.3em;
+line-height: 1.4em;
+}
+
+
+.chart {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+
+svg {
+  font-size: 10px;
+}
+
+.background {
+  fill: none;
+  /* fill: gray; */
+  /* opacity: 0.04; */
+  
+}
+
+.area {
+  fill: #cec6b9;
+}
+
+.line {
+  fill: none;
+  stroke: #74736c;
+  stroke-width: 1.4px;
+}
+
+.axis line, .grid line {
+  stroke-width: .5px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.axis path {
+  display: none;
+}
+
+
+
+
