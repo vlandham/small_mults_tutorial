@@ -465,7 +465,20 @@ svg {
 
 <p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way <a href="">the Upshot</a> likes to do.</p>
 
-<p>Now it </p>
+<p>Now we just call the axis generator on a new div at the end of the constructor: </p>
+
+<pre>
+[sourcecode language="javascript"]
+      g.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+[/sourcecode]
+<br />
+</pre>
+
+<p>Couldn't be easier.</p>
+
+<img src="img/axis.png"/>
 
 <pre>
 [sourcecode language="javascript"]
