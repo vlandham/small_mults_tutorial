@@ -224,10 +224,87 @@ transformData = (rawData) ->
 
 <h3>A Multiple of Small SVGs</h3>
 
-<p></p>
+<p>To create small multiples with D3 you have two options for how to organize the plots. We can shove all the plots into a single SVG element, or we can create a new SVG for each plot. This tutorial opts for the later. Using a separate SVG per plot lets us use CSS for layout and positioning, and allows us to deal with responsive layouts more easily. It also is the method employed by most of the examples I looked at.</p>
 
-<p></p>
+<p>To create these, first we bind the data to a <code>div</code> selection, and then we create a SVG element inside of a div for each element in our data array. We are going to also create a rectangle inside each SVG that will be used to capture mouse events.</p>
 
+<pre>
+[sourcecode language="javascript"]
+
+  # variables accessible to
+  # the rest of the functions inside SmallMultiples
+  width = 150
+  height = 120
+  margin = {top: 15, right: 10, bottom: 40, left: 35}
+  data = []
+
+  # ...
+
+  chart = (selection) ->
+    selection.each (rawData) ->
+      # Set local variable for input data.
+      # Transformation of this data has already
+      # been done by the time it reaches chart.
+      data = rawData
+
+      # Create a div and an SVG element for each element in
+      # our data array. Note that data is a nested array
+      # with each element containing another array of 'values'
+      div = d3.select(this).selectAll(".chart").data(data)
+      gEnter = div.enter().append("div").attr("class", "chart")
+        .append("svg").append("g")
+
+      svg = div.select("svg")
+      svg.attr("width", width + margin.left + margin.right )
+      svg.attr("height", height + margin.top + margin.bottom )
+
+      g = svg.select("g")
+        .attr("transform", "translate(#{margin.left},#{margin.top})")
+     
+      # Invisible background rectangle that will
+      # capture all our mouse movements
+      g.append("rect")
+        .attr("class", "background")
+        .style("pointer-events", "all")
+        .attr("width", width + margin.right )
+        .attr("height", height)
+
+
+<br />
+</pre>
+
+<p>To get these plots to sit next to one another, we need to add a bit of CSS to have the <code>.chart</code> divs float to the left:</p>
+
+<pre>
+[sourcecode language="css"]
+.chart {
+  float: left;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-top:0;
+  padding-left:0;
+}
+[/sourcecode]
+<br />
+</pre>
+
+<p>With just this bit of code, we should start to see something. Because we haven't styled our background rectangle, they should appear black:</p>
+
+<img src="img/tax_burden.png"/>
+
+<p>We are on the right track. A separate spot for each chart is waiting for us. We just have to fill in the details. But first, we should hide the background rectangle using some more css: </p>
+
+<pre>
+[sourcecode language="css"]
+.background {
+  fill: none;
+}
+[/sourcecode]
+<br />
+</pre>
+
+
+<pre>
 [sourcecode language="javascript"]
 something <- function()
 blah blah blah
@@ -236,5 +313,6 @@ oink poink
 return poo
 [/sourcecode]
 <br />
+</pre>
 
 625px wide
