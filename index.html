@@ -303,6 +303,39 @@ transformData = (rawData) ->
 <br />
 </pre>
 
+<h3>Lines and Titles</h3>
+
+<p>Before we turn to the interactions, we first need to get the visualization looking good. Using <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#line">d3.svg.line()</a> and <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#area">d3.svg.area()</a> to make some nice looking area charts. First, define these generators as well as the scales they will be using to build the paths.</p>
+
+<pre>
+[sourcecode language="javascript"]
+
+  # These accessor functions are defined to
+  # indicate the data attributes used for the
+  # x and y values. This makes it easier to
+  # swap in your own data!
+  xValue = (d) -> d.date
+  yValue = (d) -> d.n
+
+  # back at the top of the function...
+  xScale = d3.time.scale().range([0,width])
+  yScale = d3.scale.linear().range([height,0])
+
+  area = d3.svg.area()
+    .x((d) -> xScale(xValue(d)))
+    .y0(height)
+    .y1((d) -> yScale(yValue(d)))
+
+  line = d3.svg.line()
+    .x((d) -> xScale(xValue(d)))
+    .y((d) -> yScale(yValue(d)))
+
+
+[/sourcecode]
+<br />
+</pre>
+
+<p>As mentioned above, these functions will be working with elements inside of the nested <code>values</code> array, and so I've used <code>d</code> as the variable name to try to indicate that.</p>
 
 <pre>
 [sourcecode language="javascript"]
