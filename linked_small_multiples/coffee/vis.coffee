@@ -166,7 +166,7 @@ SmallMultiples = () ->
         .style("pointer-events", "none")
         .attr("dy", 13)
         .attr("y", height)
-      
+
       # Add axis last so the tick lines
       # show over the paths (Upshot style).
       g.append("g")

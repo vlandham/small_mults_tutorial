@@ -290,7 +290,7 @@ transformData = (rawData) ->
 
 <p>With just this bit of code, we should start to see something. Because we haven't styled our background rectangle, they should appear black:</p>
 
-<img src="img/tax_burden.png"/>
+<img src="img/black_rects.png"/>
 
 <p>We are on the right track. A separate spot for each chart is waiting for us. We just have to fill in the details. But first, we should hide the background rectangle using some more css: </p>
 
@@ -336,6 +336,136 @@ transformData = (rawData) ->
 </pre>
 
 <p>As mentioned above, these functions will be working with elements inside of the nested <code>values</code> array, and so I've used <code>d</code> as the variable name to try to indicate that.</p>
+
+<p>For these scales to work, we have to set their input <a href="https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear_domain">domains</a>. For the <code>xScale</code>, we can just use the min and max dates. For the <code>yScale</code>, I've bumped up the maximum y value a bit, so the tallest chart doesn't hit the top of the area. Here is the function that is used to set these domains.</p>
+
+<pre>
+[sourcecode language="javascript"]
+  # ---
+  # Sets the domain for our x and y scales.
+  # We want all the small multiples to have the
+  # same domains, so we only have to do this once.
+  # ---
+  setupScales = (data) ->
+    maxY = d3.max(data, (c) -> d3.max(c.values, (d) -> yValue(d)))
+    maxY = maxY + (maxY * 1/4)
+    yScale.domain([0,maxY])
+
+    extentX = d3.extent(data[0].values, (d) -> xValue(d))
+    xScale.domain(extentX)
+[/sourcecode]
+<br />
+</pre>
+
+<p>Inside of our chart 'constructor' function, we can use these generators to make paths for each plot:</p>
+
+<pre>
+[sourcecode language="javascript"]
+
+  chart = (selection) ->
+    selection.each (rawData) ->
+
+      data = rawData
+
+      setupScales(data)
+      
+      # further on down ...
+
+      lines = g.append("g")
+      lines.append("path")
+        .attr("class", "area")
+        .style("pointer-events", "none")
+        .attr("d", (c) -> area(c.values))
+        
+      lines.append("path")
+        .attr("class", "line")
+        .style("pointer-events", "none")
+        .attr("d", (c) -> line(c.values))
+[/sourcecode]
+<br />
+</pre>
+
+<p>And again, our SVG elements each are bound to a specific category level entry. So I've used <code>c</code> to indicate that. The <code>pointer-events: none</code> prevent these elements from grabbing mouse events that I want to hit the background rectangle. There are probably other ways to do this (like draw the rectangle on top of the other elements), but I don't mind being explicit about who should see what when it comes to user interactions. </p> 
+
+<p>While we are here, we can add category name label, as well as the start and end year labels.</p>
+
+<pre>
+[sourcecode language="javascript"]
+      lines.append("text")
+        .attr("class", "title")
+        .attr("text-anchor", "middle")
+        .attr("y", height)
+        .attr("dy", margin.bottom / 2 + 5)
+        .attr("x", width / 2)
+        .text((c) -> c.key)
+
+      lines.append("text")
+        .attr("class", "static_year")
+        .attr("text-anchor", "start")
+        .style("pointer-events", "none")
+        .attr("dy", 13)
+        .attr("y", height)
+        .attr("x", 0)
+        .text((c) -> xValue(c.values[0]).getFullYear())
+
+      lines.append("text")
+        .attr("class", "static_year")
+        .attr("text-anchor", "end")
+        .style("pointer-events", "none")
+        .attr("dy", 13)
+        .attr("y", height)
+        .attr("x", width)
+        .text((c) -> xValue(c.values[c.values.length - 1]).getFullYear())
+[/sourcecode]
+<br />
+</pre>
+
+<p>A bit of CSS and our visualization comes to life!</p>
+
+<pre>
+[sourcecode language="css"]
+svg {
+  font-size: 10px;
+}
+
+.area {
+  fill: #cec6b9;
+}
+
+.line {
+  fill: none;
+  stroke: #74736c;
+  stroke-width: 1.4px;
+}
+
+.title {
+  font-size: 12px;
+}
+[/sourcecode]
+<br />
+</pre>
+
+<img src="img/lines.png"/>
+
+<h3>An Axis for Each Multiple</h3>
+
+<p>We've opted for a casual labelling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define yourself a axis generator.</p>
+
+<pre>
+[sourcecode language="javascript"]
+  yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left").ticks(4)
+    .outerTickSize(0)
+    .tickSubdivide(1)
+    .tickSize(-width)
+[/sourcecode]
+<br />
+</pre>
+
+<p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way <a href="">the Upshot</a> likes to do.</p>
+
+<p>Now it </p>
 
 <pre>
 [sourcecode language="javascript"]

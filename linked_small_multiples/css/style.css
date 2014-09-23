@@ -48,6 +48,10 @@ svg {
   stroke-width: 1.4px;
 }
 
+.title {
+  font-size: 12px;
+}
+
 .axis line, .grid line {
   stroke-width: .5px;
   shape-rendering: crispEdges;
@@ -58,10 +62,6 @@ svg {
 
 .axis path {
   display: none;
-}
-
-.title {
-  font-size: 12px;
 }
 
 .hidden {
