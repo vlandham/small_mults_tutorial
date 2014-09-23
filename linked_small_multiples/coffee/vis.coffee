@@ -2,7 +2,7 @@
 # ---
 # We are using a function to scope
 # the creation of this chart.
-# Check out http://bost.ocks.org/mike/chart/ 
+# Check out http://bost.ocks.org/mike/chart/
 # for the details and benefits
 # ---
 SmallMultiples = () ->
@@ -28,7 +28,7 @@ SmallMultiples = () ->
   yScale = d3.scale.linear().range([height,0])
 
   # These accessor functions are defined to
-  # indicate the data attributes used for the 
+  # indicate the data attributes used for the
   # x and y values. This makes it easier to
   # swap in your own data!
   xValue = (d) -> d.date
@@ -66,8 +66,8 @@ SmallMultiples = () ->
 
   # ---
   # Creates new chart function. This is the 'constructor' of our
-  # visualization. Again, this is based on 
-  # Bostock's Reusable Chart paradigm. 
+  # visualization. Again, this is based on
+  # Bostock's Reusable Chart paradigm.
   # ---
   chart = (selection) ->
     selection.each (rawData) ->
@@ -103,7 +103,7 @@ SmallMultiples = () ->
         .on("mousemove", mousemove)
         .on("mouseout", mouseout)
 
-      # Because we bound our nested array to 
+      # Because we bound our nested array to
       # a 'selectAll' of SVG elements, each
       # svg element will be one of the nested
       # elements from that array. This means
@@ -187,7 +187,7 @@ SmallMultiples = () ->
     date = format.parse('' + year)
     
     # The index into values will be the same for all
-    # of the plots, so we can compute it once and 
+    # of the plots, so we can compute it once and
     # use it for the rest of the scrollables
     index = 0
     circle.attr("cx", xScale(date))
@@ -215,7 +215,7 @@ SmallMultiples = () ->
 
   # ---
   # If you wanted to use different
-  # data in this visual, you could 
+  # data in this visual, you could
   # pass in the xValue accessor function
   # using the x() getter/setter for
   # an instance of SmallMultiples.
@@ -242,10 +242,9 @@ SmallMultiples = () ->
 
 # ---
 # Convert the raw input data into the format
-# that our visualization expects. 
+# that our visualization expects.
 # ---
 transformData = (rawData) ->
-  # format = d3.time.format("%b-%Y")
   format = d3.time.format("%Y")
   rawData.forEach (d) ->
     d.date = format.parse(d.year)
@@ -287,7 +286,7 @@ $ ->
 
   # I've started using Bostock's queue to load data.
   # The tool allows you to easily add more input files
-  # if you need to (for this example it might be overkill or 
+  # if you need to (for this example it might be overkill or
   # inefficient, but its good to know about).
   # https://github.com/mbostock/queue
   queue()

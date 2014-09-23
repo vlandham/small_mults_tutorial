@@ -121,7 +121,9 @@ I did find a demonstration from Mike Bostock of a scrubbable + highlightable int
   [/sourcecode]
   <br />
 </pre>
+
 <p>If it is <strong>python 3.x</strong>, the syntax is a bit different:</p>
+
 <pre>
   [sourcecode language="bash"]
   # start web server with python 3
@@ -138,21 +140,93 @@ If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier 
 
 <h3>The Data</h3>
 
-<p><a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but it is one of the oldest. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. It is one of the few websites I can still remember perusing for fun back in college, just to learn something (I guess my classwork was insufficient for knowledge acquisition).</p>
+<p><a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but to my knowledge, it is one of the oldest that is still ticking. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. I've got a soft spot for Ask MetaFilter. It is one of the few websites I can still remember perusing for fun back in college just to discover something new (I guess my chosen coursework was insufficient for knowledge acquisition. I probably should have to a better school).</p>
 
-<p>Recently, a very honest article appeared on Medium about the <a href="https://medium.com/technology-musings/on-the-future-of-metafilter-941d15ec96f0">dire future of MetaFilter</a>. While a bit sad, it got me wondering if people still use Ask MetaFilter today, and how interaction with the site has changed over the years.</p>
+<p>Recently, a very honest article appeared on Medium about the <a href="https://medium.com/technology-musings/on-the-future-of-metafilter-941d15ec96f0">uncertain future of MetaFilter</a>. While a bit sad, it got me wondering if people still use Ask MetaFilter today, and how interaction with the site has changed over the years.</p>
 
 <p>When I found that they offered a <a href="http://stuff.metafilter.com/infodump/">post data dump</a>, I decided to check it out.</p>
 
-<h3>Loading the Data</h3>
+<p>We will be using this data to create small multiples of posts over time. Each plot will display a different category of posts. Post counts are aggregated by year. I've included a primitive R script that I used to perform the data manipulation in the <code>tools</code> directory of the source code.</p>
 
-<p>Ok, first the easiest part of any D3 project: loading the data. Well, the loading part is easy, but some times getting it into the format you want after you load it can be a bit of a pain.</p>
+<p>Let's get started!</p>
+
+
+<h3>Loading and Transforming</h3>
+
+<p>First, the easiest part of any D3 project - loading the data. Well, the loading part is easy, but some times getting it into the format you want after you load it can be a bit of a pain.</p>
+
+<p>We are going to load the data with Mike Bostock's <a href="https://github.com/mbostock/queue">queue library</a>, which makes it easy if we need to load multiple datasets in at one time. Its a bit overkill here, but useful to know about.</p>
+
+<pre>
+[sourcecode language="javascript"]
+queue()
+  .defer(d3.tsv, "data/askmefi_category_year.tsv")
+  .await(display)
+[/sourcecode]
+<br />
+
+</pre>
+
+<p>See, easy right? This will call the <code>display</code> function once the data is loaded. Inside <code>display</code>, we will call <code>transformData</code> and then send the data up to be visualized. The <code>transformData</code> function uses <a href="https://github.com/mbostock/d3/wiki/Arrays#d3_nest">d3.nest</a> to group the data by category.</p>
+
+<pre>
+[sourcecode language="javascript"]
+# ---
+# Convert the raw input data into the format
+# that our visualization expects. 
+# ---
+transformData = (rawData) ->
+  format = d3.time.format("%Y")
+  rawData.forEach (d) ->
+    d.date = format.parse(d.year)
+    d.n = +d.n
+  nest = d3.nest()
+    .key((d) -> d.category)
+    .sortValues((a,b) -> d3.ascending(a.date, b.date))
+    .entries(rawData)
+  nest
+[/sourcecode]
+<br />
+</pre>
+
+<p>The important thing to remember about the output from <code>nest</code> is that it is... well nested. Our original data looks something like this:</p>
+
+<pre>
+"year"	"category"	"n"
+"2004"	"clothing, beauty, & fashion"	141
+"2004"	"computers & internet"	2489
+"2004"	"education"	151
+"2005"	"clothing, beauty, & fashion"	203
+"2005"	"computers & internet"	2200
+"2005"	"education"	201
+"2005"	"food & drink"	324
+"2005"	"grab bag"	248
+"2005"	"health & fitness"	590
+</pre>
+
+<p>The nesting transformation makes it look something like:</p>
+
+<pre>
+[
+  {"key":"clothing, beauty, & fashion",
+   "values":
+     [{"year":"2004", "n":141, "date":"2004-01-01"},{"year":"2005", "n":203, "date":"2005-01-01"},...]
+  },
+  {"key":"computers & internet",
+   "values":
+     [{"year":"2004", "n":2489, "date":"2004-01-01"},{"year":"2005", "n":2200, "date":"2005-01-01"},...]
+  },
+  ...
+]
+</pre>
+
+<p>Each nested entry has a <code>key</code> (our categories), and an array of <code>values</code> (our counts per year). I some times find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or inner the nested one. To help clear up the confusion (I hope) I've used the variable <code>c</code> when we are looking at an outer category level data, and <code>d</code> when we are dealing with an element inside of <code>values</code>.</p>
+
+<h3>A Multiple of Small SVGs</h3>
 
 <p></p>
 
 <p></p>
-
-<p>The binding methodology of </p>
 
 [sourcecode language="javascript"]
 something <- function()
