@@ -32,6 +32,7 @@ colnames(askmefi_months) <- c('mon_year', 'category', 'n')
 write.table(askmefi_months, file = "~/Desktop/askmefi_category_month.tsv", row.names = FALSE, col.names = TRUE, sep = "\t")
 
 askmefi_years <- summarise(group_by(askmefi_dates, year, Description), n = n())
+askmefi_years <- filter(askmefi_years, year != "2003")
 colnames(askmefi_years) <- c('year', 'category', 'n')
 write.table(askmefi_years, file = "~/Desktop/askmefi_category_year.tsv", row.names = FALSE, col.names = TRUE, sep = "\t")
 

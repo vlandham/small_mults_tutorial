@@ -129,6 +129,22 @@ SmallMultiples = () ->
         .attr("x", width / 2)
         .text((c) -> c.key)
 
+      lines.append("text")
+        .attr("class", "static_year")
+        .attr("text-anchor", "start")
+        .style("pointer-events", "none")
+        .attr("dy", 13)
+        .attr("y", height)
+        .text((c) -> xValue(c.values[0]).getFullYear())
+
+      lines.append("text")
+        .attr("class", "static_year")
+        .attr("text-anchor", "end")
+        .style("pointer-events", "none")
+        .attr("dy", 13)
+        .attr("y", height)
+        .text((c) -> xValue(c.values[c.values.length - 1]).getFullYear())
+
       # Add a circle and caption to fill in
       # during mousemove
       circle = lines.append("circle")
@@ -146,7 +162,7 @@ SmallMultiples = () ->
         .attr("class", "year")
         .attr("text-anchor", "middle")
         .style("pointer-events", "none")
-        .attr("dy", 10)
+        .attr("dy", 13)
         .attr("y", height)
       
       # Add axis last so the tick lines
@@ -159,6 +175,7 @@ SmallMultiples = () ->
   # ---
   mouseover = () ->
     circle.attr("opacity", 1.0)
+    d3.select(".static_year").classed("hidden", true)
     mousemove.call(this)
 
   # ---
@@ -166,10 +183,10 @@ SmallMultiples = () ->
   mousemove = () ->
     year = xScale.invert(d3.mouse(this)[0]).getFullYear()
     date = format.parse('' + year)
-    # date = xScale.invert(d3.mouse(this)[0])
     
     # The index into values will be the same for all
-    # of the plots, so we can save it here.
+    # of the plots, so we can compute it once and 
+    # use it for the rest of the scrollables
     index = 0
     circle.attr("cx", xScale(date))
       .attr "cy", (c) ->
@@ -184,22 +201,14 @@ SmallMultiples = () ->
 
     curYear.attr("x", xScale(date))
       .text(year)
-  # mousemove = () ->
-  #   date = xScale.invert(d3.mouse(this)[0])
-  #   circle.attr("cx", xScale(date))
-  #     .attr "cy", (c) ->
-  #       index = bisect(c.values, date, 0, c.values.length - 1)
-  #       yScale(yValue(c.values[index]))
-  #   caption.attr("x", xScale(date))
-  #     .text (c) ->
-  #       index = bisect(c.values, date, 0, c.values.length - 1)
-  #       yValue(c.values[index])
 
   # ---
   # ---
   mouseout = () ->
+    d3.select(".static_year").classed("hidden", false)
     circle.attr("opacity", 0)
     caption.text("")
+    curYear.text("")
 
 
   # ---

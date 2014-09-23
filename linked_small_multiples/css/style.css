@@ -64,6 +64,11 @@ svg {
   font-size: 12px;
 }
 
+.hidden {
+  display:none;
+  opacity: 0.0;
+}
+
 
 
 
