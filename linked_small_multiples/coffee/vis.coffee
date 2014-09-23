@@ -10,15 +10,19 @@ SmallMultiples = () ->
   # the rest of the functions inside SmallMultiples
   width = 150
   height = 120
-  margin = {top: 15, right: 5, bottom: 5, left: 35}
+  margin = {top: 15, right: 10, bottom: 40, left: 35}
   data = []
+
   # these will be set to d3 selections later
   circle = null
   caption = null
+  curYear = null
+
   # d3.bisector creates a bisect function that
   # can be used to search an array for a specific
   # value. We will use it later in mouseover.
   bisect = d3.bisector((d) -> d.date).left
+  format = d3.time.format("%Y")
 
   xScale = d3.time.scale().range([0,width])
   yScale = d3.scale.linear().range([height,0])
@@ -30,6 +34,8 @@ SmallMultiples = () ->
   xValue = (d) -> d.date
   yValue = (d) -> d.n
 
+  # The large tickSize is used
+  # to paint lines across the plots
   yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left").ticks(4)
@@ -91,7 +97,7 @@ SmallMultiples = () ->
       g.append("rect")
         .attr("class", "background")
         .style("pointer-events", "all")
-        .attr("width", width)
+        .attr("width", width + margin.right )
         .attr("height", height)
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
@@ -114,7 +120,15 @@ SmallMultiples = () ->
         .attr("class", "line")
         .style("pointer-events", "none")
         .attr("d", (c) -> line(c.values))
-      
+
+      lines.append("text")
+        .attr("class", "title")
+        .attr("text-anchor", "middle")
+        .attr("y", height)
+        .attr("dy", margin.bottom / 2 + 5)
+        .attr("x", width / 2)
+        .text((c) -> c.key)
+
       # Add a circle and caption to fill in
       # during mousemove
       circle = lines.append("circle")
@@ -123,9 +137,17 @@ SmallMultiples = () ->
         .style("pointer-events", "none")
 
       caption = lines.append("text")
+        .attr("class", "caption")
         .attr("text-anchor", "middle")
         .style("pointer-events", "none")
-        .attr("y", 20)
+        .attr("dy", -8)
+
+      curYear = lines.append("text")
+        .attr("class", "year")
+        .attr("text-anchor", "middle")
+        .style("pointer-events", "none")
+        .attr("dy", 10)
+        .attr("y", height)
       
       # Add axis last so the tick lines
       # show over the paths (Upshot style).
@@ -142,15 +164,36 @@ SmallMultiples = () ->
   # ---
   # ---
   mousemove = () ->
-    date = xScale.invert(d3.mouse(this)[0])
+    year = xScale.invert(d3.mouse(this)[0]).getFullYear()
+    date = format.parse('' + year)
+    # date = xScale.invert(d3.mouse(this)[0])
+    
+    # The index into values will be the same for all
+    # of the plots, so we can save it here.
+    index = 0
     circle.attr("cx", xScale(date))
       .attr "cy", (c) ->
         index = bisect(c.values, date, 0, c.values.length - 1)
         yScale(yValue(c.values[index]))
+
     caption.attr("x", xScale(date))
+      .attr "y", (c) ->
+        yScale(yValue(c.values[index]))
       .text (c) ->
-        index = bisect(c.values, date, 0, c.values.length - 1)
         yValue(c.values[index])
+
+    curYear.attr("x", xScale(date))
+      .text(year)
+  # mousemove = () ->
+  #   date = xScale.invert(d3.mouse(this)[0])
+  #   circle.attr("cx", xScale(date))
+  #     .attr "cy", (c) ->
+  #       index = bisect(c.values, date, 0, c.values.length - 1)
+  #       yScale(yValue(c.values[index]))
+  #   caption.attr("x", xScale(date))
+  #     .text (c) ->
+  #       index = bisect(c.values, date, 0, c.values.length - 1)
+  #       yValue(c.values[index])
 
   # ---
   # ---
@@ -191,9 +234,10 @@ SmallMultiples = () ->
 # that our visualization expects. 
 # ---
 transformData = (rawData) ->
-  format = d3.time.format("%b-%Y")
+  # format = d3.time.format("%b-%Y")
+  format = d3.time.format("%Y")
   rawData.forEach (d) ->
-    d.date = format.parse(d.mon_year)
+    d.date = format.parse(d.year)
     d.n = +d.n
   nest = d3.nest()
     .key((d) -> d.category)
@@ -236,6 +280,6 @@ $ ->
   # inefficient, but its good to know about).
   # https://github.com/mbostock/queue
   queue()
-    .defer(d3.tsv, "data/askmefi_category_month.tsv")
+    .defer(d3.tsv, "data/askmefi_category_year.tsv")
     .await(display)
 

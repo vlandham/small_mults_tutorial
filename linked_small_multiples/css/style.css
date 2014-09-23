@@ -13,15 +13,12 @@ h1 {
 
 #lead {
   clear: both;
-  font-size: 1.1em;
-  line-height: 1.7em;
-  font-family: Georgia,serif;
 }
 
 #lead p {
-font-family: Georgia,Palatino,serif;
-font-size: 1.3em;
-line-height: 1.4em;
+  font-family: Georgia,Palatino,serif;
+  font-size: 1.3em;
+  line-height: 1.4em;
 }
 
 
@@ -39,9 +36,6 @@ svg {
 
 .background {
   fill: none;
-  /* fill: gray; */
-  /* opacity: 0.04; */
-  
 }
 
 .area {
@@ -64,6 +58,10 @@ svg {
 
 .axis path {
   display: none;
+}
+
+.title {
+  font-size: 12px;
 }
 
 
