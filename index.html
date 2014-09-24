@@ -30,7 +30,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <ol>
   <li>Updateable</li>
-  <li>Reorderable</li>
+  <li>Sortable</li>
   <li>Highlightable</li>
   <li>Scrubbable</li>
 </ol>
@@ -50,9 +50,9 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <p>Here, you can toggle between repository count and percent of total for each language, providing both absolute and relative metrics to compare.</p>
 
-<h3>Reorderable</h3>
+<h3>Sortable</h3>
 
-<p>With reorderable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer pick out different patterns in the data.</p>
+<p>With sortable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer pick out different patterns in the data.</p>
 
 <img src="img/kepler.png">
 
@@ -80,7 +80,7 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <p>I first saw this in 2012 in the New York Times piece about <a href="http://www.nytimes.com/interactive/2012/11/30/us/tax-burden.html">America's Tax Burden</a>, but now it's everywhere.</p>
 
-<p>Propublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance payout exposé</a> uses this technique and was praised for it by <a href="http://junkcharts.typepad.com/junk_charts/2014/07/a-small-step-for-interactivity.html">Junk Chart's Kaiser Fung</a> (and that's high praise).</p>
+<p>ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance payout exposé</a> uses this technique and was praised for it by <a href="http://junkcharts.typepad.com/junk_charts/2014/07/a-small-step-for-interactivity.html">Junk Chart's Kaiser Fung</a> (and that's high praise).</p>
 
 <img src="img/ambulance.png"/>
 
@@ -94,13 +94,13 @@ There are five broad categories of linked small multiple interactions that we wi
 <span class="tip">I'm sure I missed more types of interactions. Have one and want to tell me? Just email it to me or write it in the comments.</span>
 I did find a demonstration from Mike Bostock of a scrubbable + highlightable interaction where points in a small multiples of scatter plots were <a href="http://bl.ocks.org/mbostock/4063663">selectable in two dimensions</a>. However, while this type of 'brushable' interaction would certainly be useful in some situations, so far I haven't found it used in the wild.</p>
 
-<h2>Our Own Scrubbable Highlightable Reorderable Small Multiple</h2>
+<h2>Our Own Scrubbable Highlightable Sortable Small Multiple</h2>
 
 <p>Ok, enough examples, let's get coding.</p>
 
 <p>Many of these interactions could be used together to make even more interesting interactions, and that's what we are going to try in this tutorial. Let's start with a basic small multiples built in <a href="http://d3js.org/">D3.js</a> and then add in some of these interactions to see how they work.</p>
 
-<p>You can <a href="">download the code</a> and follow along as we build up the visualization. It is again written in <a href="">CoffeeScript</a>, but I've also compiled it into straight JavaScript and saved that off - in case you don't want to give CoffeeScript a try.</p>
+<p>You can <a href="">download the code</a> and follow along as we build up the visualization. It is again written in <a href="http://coffeescript.org/">CoffeeScript</a>, but I've also compiled it into straight JavaScript and saved that off - in case you don't want to give CoffeeScript a try.</p>
 
 <p>If you have python installed (and if you are on a Mac or Linux box, you should have python by default), you can open up the code directory in your Terminal and run python's simple http server.</p>
 
@@ -617,6 +617,70 @@ I am also doing a bit of extra work to round to the nearest first of the year. A
 In short, we use <code>bisect</code> to get the index into the <code>values</code> array for the currently selected date. Then we feed the <code>yValue</code> for that position (the count) into our <code>yScale</code> to get the y position for the circle and value annotations. Pretty slick, right?</p>
 
 <p>With this bit of functionality, our small multiples are fully scrubbable!</p>
+
+<h3>Sorting made Simple</h3>
+
+<p>Ok. Now we have a set of small multiples linked together with a scrub able interaction to provide a deeper experience for the viewer.</p>
+
+<p>But what about the sort order? Typically, small multiples should be ordered by a meaningful variable. Right now that is not really the case for our example.</p>
+
+<p>But there is hope! On top of being scrubbable, ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance visualization</a> provides their user with the ability to resort the small multiples in different ways. We can use the same methodology to make our small multiples sortable too!</p>
+
+<p>Now here is where using separate SVG elements may give us some issues. If we had everything. In one big div, we would have to keep track of the x and y positions of all out plots, but that would have made resorting them easier. We would just resort the input data and transition to the new positions.</p>
+
+<p>With CSS handling the positions, it would be a lot of work to go back and add this functionality. If this was a list, it might be a perfect case for <a href="http://flowingdata.com/2014/09/22/how-to-make-an-animated-self-sorting-list/">FlowingData's animated sorting list</a>, but a two dimensional grid of plots makes things more complicated.</p>
+
+<p>Fortunately, there is a great library that can handle all these details for us: <a href="http://isotope.metafizzy.co/">Isotope JS</a>.</p>
+
+<p>Isotope is made to take care of the positioning of html elements into nice looking grids. The API is easy to understand, and you can easily provide it different sorting functions - which is the piece we will use here. Let's add some basic isotope action now.</p>
+
+<p>After our plots have been created, we initialize the isotope library.</p>
+
+<pre>
+[sourcecode language="javascript"]
+  display = (error, rawData) ->
+    if error
+      console.log(error)
+
+    data = transformData(rawData)
+    plotData("#vis", data, plot)
+    setupIsoytpe()
+[/sourcecode]
+<br />
+</pre>
+
+
+<pre>
+[sourcecode language="javascript"]
+setupIsoytpe = () ->
+  $("#vis").isotope({
+    itemSelector: '.chart',
+    layoutMode: 'fitRows',
+    getSortData: {
+      count: (e) ->
+        d = d3.select(e).datum()
+        sum = d3.sum(d.values, (d) -> d.n)
+        sum * -1 # reverse the sort so largest is first
+      name: (e) ->
+        d = d3.select(e).datum()
+        d.key
+    }
+  })
+
+  $("#vis").isotope({sortBy:'count'})
+[/sourcecode]
+<br />
+</pre>
+
+<p>This tells isotope to reorder the <code>.chart</code> elements inside of the <code>#vis</code> div. we provide two sort orders: aggregate count and category name.</p>
+
+<p>The cool thing about D3 is that we can easily get to the data bound to each chart using the <code>datum()</code> function. So even though this is not D3 code, we can still use our data to determine the sort.</p>
+
+<p>When the user binds to </p>
+
+<p>Isotope is free for personal and open source use, with a pretty reasonable commercial license. If you want a completely free option, you might check out <a href="http://razorjack.net/quicksand/index.html">Quicksand</a> or <a href="http://vestride.github.io/Shuffle/">Suffle</a>.</p>
+
+
 
 <pre>
 [sourcecode language="javascript"]
