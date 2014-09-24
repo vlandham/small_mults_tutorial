@@ -82,13 +82,14 @@ SmallMultiples = () ->
       # our data array. Note that data is a nested array
       # with each element containing another array of 'values'
       div = d3.select(this).selectAll(".chart").data(data)
-      gEnter = div.enter().append("div").attr("class", "chart")
+      div.enter().append("div").attr("class", "chart")
         .append("svg").append("g")
 
       svg = div.select("svg")
-      svg.attr("width", width + margin.left + margin.right )
-      svg.attr("height", height + margin.top + margin.bottom )
+        .attr("width", width + margin.left + margin.right )
+        .attr("height", height + margin.top + margin.bottom )
 
+      # Margins give space for the axis and text labels
       g = svg.select("g")
         .attr("transform", "translate(#{margin.left},#{margin.top})")
      
@@ -174,6 +175,9 @@ SmallMultiples = () ->
         .call(yAxis)
 
   # ---
+  # Called when viewer first starts to interact with
+  # one of the plots. Ensure the circle is visible and the
+  # the year labels are not.
   # ---
   mouseover = () ->
     circle.attr("opacity", 1.0)
@@ -205,6 +209,9 @@ SmallMultiples = () ->
       .text(year)
 
   # ---
+  # When viewer moves mouse out of plot, hide
+  # circle and annotations while showing 
+  # the x axis labels
   # ---
   mouseout = () ->
     d3.selectAll(".static_year").classed("hidden", false)
