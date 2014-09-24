@@ -11,28 +11,30 @@ title: Linked Interactive Small Multiples
 <br/><br/>
 <div class="clearfix"></div>
 
-<p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate chart to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data. A chorus of little stories that can help tell a bigger one.</p>
+<p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate plot to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data.</p> 
 
-<p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting</a> (which is when some data is obscured or occluded because there are too many things being plotted). Compared to animation, small multiples present all of the data at once which makes it easier for viewers to naturally compare each facet with others instead of trying to flip back and forth between views.</p>
+<p>A chorus of little stories to help tell a bigger one.</p>
 
-<p>FlowingData has covered small multiples and their uses many times over. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
+<p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting (pdf)</a>, (which is when some data is obscured or occluded because there are too many things being plotted).</p> 
+
+<p>Compared to animation, small multiples present all of the data at once which makes it easier for viewers to naturally compare each facet with others instead of trying to flip back and forth between views.</p>
+
+<p>FlowingData has covered small multiples and their uses a few times already. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
 
 <p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right?</span>
-But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>.</p>
+But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>, so its worth a revisit.</p>
 
-<p>In this tutorial we are going to take another look at small multiples and explore more possibilities available to us when we layer on some functional interactions.</p>
+<p>In this tutorial we are going to take another look at small multiples and explore the possibilities available to us when we layer on some interactions.</p>
 
-<p>Specially, I'd like to talk about <strong>linked</strong> small multiples. Here, all the plots in the small multiple are connected in some way through how they respond to user interactions.</p>
+<p>Specially, I'd like to talk about <strong>linked</strong> small multiples. Here, all the plots in the small multiple are connected in some way through how they respond to user interaction.</p>
 
-<p>Before we get started with our own, it might be valuable to look at some successful examples of linked small multiples out there to get a sense for what kind of interactions are possible, and how they are getting used.</p>
+<p>Before we get started, it might be valuable to look at some successful examples of linked small multiples out there to get a sense for what kind of interactions are possible, and how they are getting used.</p>
 
 <h2>Examples of Linked Small Multiple</h2>
 
-<p>I've broken down the domain of linked small multiples into four types of interactions. Mostly, this just allows me to make up silly names for the interactions (which probably already have real names anyways), but it helps frame the conversation a bit.</p>
-
 <p>
-<span class="tip">And if you have a better name for one or more of these categories from the vis or UI/UX world, please let me know!</span>
-There are five broad categories of linked small multiple interactions that we will look at. The visualizations can be:
+<span class="tip">And if you have a better name for one or more of these categories from the Vis or UI/UX world, please let me know!</span>
+I've broken down the domain of linked small multiples into four types of interactions. Mostly, this just allows me to make up silly names for the interactions (which probably already have real names anyways), but it also helps frame the conversation a bit.</p>
 
 <ol>
   <li>Updateable</li>
@@ -42,7 +44,9 @@ There are five broad categories of linked small multiple interactions that we wi
 </ol>
 </p>
 
-<p>To clarify a bit, we are focusing on interactions that affect all or many of the small multiple plots at the same time, so tooltips don't count. But if you are interested in small multiples that are interactive at the individual chart level, check out my <a href="http://vallandingham.me/small_multiples_with_details.html">small multiples with details on demand</a> tutorial for one such example.</p>
+<p>To clarify a bit, we are focusing on interactions that affect <strong>all or many</strong> of the small multiple plots at the same time, so tooltips don't count. But if you are interested in small multiples that are interactive at the individual chart level, check out my <a href="http://vallandingham.me/small_multiples_with_details.html">small multiples with details on demand</a> tutorial for one such example.</p>
+
+<p>Let's look at each type in turn.</p>
 
 <h3>Updateable</h3>
 
@@ -76,21 +80,25 @@ There are five broad categories of linked small multiple interactions that we wi
 
 <img src="img/eu_tracker.png"/>
 
-<p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country. Nice!</p>
+<p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country and drill in. Nice!</p>
 
 <h3>Scrubbable</h3>
 
-<p>Now we're cooking with fire! Or at least interesting interactions. Scrubbable small multiples display the values of individual data points. You've seen this before in line charts and bar charts, but with a scrubbable small multiple, you get values in all your plots.</p>
+<p>
+<span class="tip">Maybe this one should just be called 'mouseable' - but scrubbable sounds so much cooler.</span>
+Now we're cooking with fire! Or at least interesting interactions. Scrubbable small multiples display the values of individual data points. You've seen this before in line charts and bar charts, but with a scrubbable small multiple, you get values in all your plots.</p>
 
 <img src="img/tax_burden.png"/>
 
 <p>I first saw this in 2012 in the New York Times piece about <a href="http://www.nytimes.com/interactive/2012/11/30/us/tax-burden.html">America's Tax Burden</a>, but now it's everywhere.</p>
 
-<p>ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance payout exposé</a> uses this technique and was praised for it by <a href="http://junkcharts.typepad.com/junk_charts/2014/07/a-small-step-for-interactivity.html">Junk Chart's Kaiser Fung</a> (and that's high praise).</p>
+<p>
+<span class="tip">And that's high praise.</span>
+ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance payout exposé</a> uses this technique and was hailed for it by <a href="http://junkcharts.typepad.com/junk_charts/2014/07/a-small-step-for-interactivity.html">Junk Chart's Kaiser Fung</a>.</p>
 
 <img src="img/ambulance.png"/>
 
-<p>And most recently, scrubbable small multiples were used to help explain the <a href="http://www.nytimes.com/interactive/2014/09/14/sunday-review/unplanned-pregnancies.html?smid=tw-share">inefficiencies of birth control methods</a>. The visual provides great within-plot comparisons, as well as between-plot comparisons with this approach.</p>
+<p>And most recently, scrubbable small multiples were used to help explain the <a href="http://www.nytimes.com/interactive/2014/09/14/sunday-review/unplanned-pregnancies.html">likelihood of unplanned pregnancies</a> around different types of birth control. The visual provides great within-plot and between-plot comparisons with this approach.</p>
 
 <img src="img/birth_control.png"/>
 
@@ -100,7 +108,7 @@ There are five broad categories of linked small multiple interactions that we wi
 <span class="tip">I'm sure I missed more types of interactions. Have one and want to tell me? Just email it to me or write it in the comments.</span>
 I did find a demonstration from Mike Bostock of a scrubbable + highlightable interaction where points in a small multiples of scatter plots were <a href="http://bl.ocks.org/mbostock/4063663">selectable in two dimensions</a>. However, while this type of 'brushable' interaction would certainly be useful in some situations, so far I haven't found it used in the wild.</p>
 
-<h2>Our Own Scrubbable Highlightable Sortable Small Multiple</h2>
+<h2>Our Own Scrubbable Sortable Small Multiple</h2>
 
 <p>Ok, enough examples, let's get coding.</p>
 
@@ -147,7 +155,9 @@ If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier 
 
 <h3>The Data</h3>
 
-<p><a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but to my knowledge, it is one of the oldest that is still ticking. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. I've got a soft spot for Ask MetaFilter. It is one of the few websites I can still remember perusing for fun back in college just to discover something new (I guess my chosen coursework was insufficient for knowledge acquisition. I probably should have to a better school).</p>
+<p>
+<span class="tip">Don't get me wrong - I love S.O. but the rule system can be a bit of a downer.</span>
+<a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but to my knowledge, it is one of the oldest that is still ticking. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. I've got a soft spot for Ask MetaFilter. It is one of the few websites I can still remember perusing for fun back in college just to discover something new (I guess my chosen coursework was insufficient for knowledge acquisition. I probably should have to a better school).</p>
 
 <p>Recently, a very honest article appeared on Medium about the <a href="https://medium.com/technology-musings/on-the-future-of-metafilter-941d15ec96f0">uncertain future of MetaFilter</a>. While a bit sad, it got me wondering if people still use Ask MetaFilter today, and how interaction with the site has changed over the years.</p>
 
@@ -230,13 +240,19 @@ transformData = (rawData) ->
 ]
 </code></pre>
 
-<p>Each nested entry has a <code>key</code> (our categories), and an array of <code>values</code> (our counts per year). I some times find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or inner the nested one. To help clear up the confusion (I hope) I've used the variable <code>c</code> when we are looking at an outer category level data, and <code>d</code> when we are dealing with an element inside of <code>values</code>.</p>
+<p>Each nested entry has a <code>key</code> (our categories), and an array of <code>values</code> (our counts per year).</p>
+
+<p>I some times find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or inner the nested one.</p>
+
+<p>
+<span class="tip">c for 'category', d for 'data'. Or just c comes before d and so d data is nested inside c.</span>
+To help clear up the confusion (I hope) I've used the variable <code>c</code> when we are looking at an outer category level data, and <code>d</code> when we are dealing with an element inside of <code>values</code>.</p>
 
 <h3>A Multitude of Small SVGs</h3>
 
-<p>To create small multiples with D3 you have two options for how to organize the plots. We can shove all the plots into a single SVG element, or we can create a new SVG for each plot. This tutorial opts for the later. Using a separate SVG per plot let's us use CSS for layout and positioning, and allows us to deal with responsive layouts more easily. It also is the method employed by most of the examples I looked at.</p>
+<p>To create small multiples with D3 you have two options for how to organize the plots. We can shove all the plots into a single SVG element, or we can create a new SVG for each plot. This tutorial opts for the <strong>later</strong>. Using a separate SVG per plot let's us use CSS for layout and positioning, and allows us to deal with responsive layouts more easily. It also is the method employed by most of the examples I looked at.</p>
 
-<p>To create these, first we bind the data to a <code>div</code> selection, and then we create a SVG element inside of a div for each element in our data array. We are going to also create a rectangle inside each SVG that will be used to capture mouse events.</p>
+<p>To make these, first we bind the data to a <code>div</code> selection, and then create a SVG element inside of the div for each element in our data array. We are going to also create a rectangle inside the SVG elements that will be used to capture mouse events.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -285,8 +301,11 @@ transformData = (rawData) ->
 </code></pre>
 
 <p>
-<span class="tip">If it would at all be useful or sensible to create 1000's of plots is something you might have an opinion about. I'm just saying it could be done easily.</span>
-The div element's are bound to <code>data</code>, so each div and SVG combo will be bound to a categories data. It seems almost trivial, in terms of the code, but this combination of nested data and D3's succinct but powerful data binding concepts allow us to produce a thousand plots (or in this case just 20) with the same amount of code as it would take to make just one.</p>
+The div element's are bound to <code>data</code>, so each div and SVG combo will be bound to a categories data.</p> 
+
+<p>
+<span class="tip">Though it might not make sense to create 1000's of plots. I'm just saying it could be done easily.</span>
+It seems almost trivial, in terms of the amount of code written, but this combination of nested data and D3's succinct but powerful data binding concepts allow us to produce a thousand plots (or in this case just 20) with the same amount of code as it would take to make just one.</p>
 
 <p>To get these plots to sit next to one another, we need to add a bit of CSS to have the <code>.chart</code> divs float to the left:</p>
 
@@ -307,7 +326,7 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 
 <img src="img/black_rects.png"/>
 
-<p>Ugly, but we are on the right track. A separate spot for each chart is ready and waiting. We just have to fill in the details. But first, we should hide that background rectangle: </p>
+<p>Ugly, but we are on the right track. A separate spot for each chart is ready and waiting. We just have to visualize the details. But first, we should hide that background rectangle: </p>
 
 <pre><code class="language-css">
 [sourcecode language="css"]
@@ -400,9 +419,13 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 <br />
 </code></pre>
 
-<p>And again, our SVG elements each are bound to a specific category level entry. So I've used <code>c</code> to indicate that. The <code>pointer-events: none</code> prevent these elements from grabbing mouse events that I want to hit the background rectangle. There are probably other ways to do this (like draw the rectangle on top of the other elements), but I don't mind being explicit about who should see what when it comes to user interactions. </p> 
+<p>And again, our SVG elements each are bound to a specific category level entry. So I've used <code>c</code> to indicate that.</p>
 
-<p>While we are here, we can add category name label, as well as the start and end year labels.</p>
+<p>
+<span class="tip">You could also put this pointer-event style in the CSS for these elements.</span>
+The <code>pointer-events: none</code> prevent these elements from grabbing mouse events that I want to hit the background rectangle. There are probably other ways to do this (like draw the rectangle on top of the other elements), but I don't mind being explicit about who should see what when it comes to user interactions. </p> 
+
+<p>While we are here, we can add a category name label, as well as the start and end year labels.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -464,7 +487,7 @@ svg {
 
 <h3>An Axis for Each Multiple</h3>
 
-<p>We've opted for a casual labelling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define yourself a axis generator.</p>
+<p>We've opted for a casual labelling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define an axis generator to use.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -478,9 +501,9 @@ svg {
 <br />
 </code></pre>
 
-<p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way <a href="">the Upshot</a> likes to do.</p>
+<p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way the Upshot likes to do.</p>
 
-<p>Now we just call the axis generator on a new div at the end of the constructor: </p>
+<p>Now we just call the axis generator on a new div at the end of the constructor:</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -495,11 +518,11 @@ svg {
 
 <img src="img/axis.png"/>
 
-<h3>Linked Interactions</h3>
+<h3>Scrubbing Our Interactions</h3>
 
-<p>So far, we have been following in the footsteps of the <a href="http://projects.flowingdata.com/timeuse/">previous interactive small multiples</a>. While valuable in itself, as D3 has grown and changed since then, now it is time to get some linked interactions going!</p>
+<p>So far, we have been following in the footsteps of the <a href="http://projects.flowingdata.com/timeuse/">previous interactive small multiples</a>. While valuable in itself, as D3.js has grown and changed since then, now it is time to get some linked interactions going!</p>
 
-<p>The visual elements that will change as the user scrubs over a plot are a circle, a year label, and a value label. As there is one of each for each plot, we can add them in the constructor, keeping them initially hidden.</p>
+<p>The visual elements that will change as the user scrubs over a plot are a circle, a year label, and a value label. As there is one of each for each plot, we can add them in the constructor.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -575,7 +598,7 @@ svg {
 
 <p>Now, we just need to deal with <code>mousemove</code>.</p>
 
-<p>First, we want to find the year that the mouse is currently hovering over. We can do this using D3's <a href="https://github.com/mbostock/d3/wiki/Time-Scales#invert">scale.invert()</a> function which returns the value from the input domain given a value from the output range. We can use the mouse's x position to get the value along the x axis to invert.</p>
+<p>First, we want to find the year that the mouse is currently hovering over. We can do this using D3's <a href="https://github.com/mbostock/d3/wiki/Time-Scales#invert">scale.invert()</a> function that returns the value from the <strong>input domain</strong> given a value from the output range. We can use the mouse's x position to get the value along the x scale to invert.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -640,17 +663,18 @@ In short, we use <code>bisect</code> to get the index into the <code>values</cod
 
 <p>Ok. Now we have a set of small multiples linked together with a scrub able interaction to provide a deeper experience for the viewer.</p>
 
-<p>But what about the sort order? Typically, small multiples should be ordered by a meaningful variable. Right now that is not really the case for our example.</p>
+<p>But what about the sort order? Typically, small multiples should be ordered by a meaningful variable. Right now that isn't really the case for our example.</p>
 
-<p>But there is hope! On top of being scrubbable, ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance visualization</a> provides their user with the ability to resort the small multiples in different ways. We can use the same methodology to make our small multiples sortable too!</p>
 
 <p>Now here is where using separate SVG elements may give us some issues. If we had everything. In one big div, we would have to keep track of the x and y positions of all out plots, but that would have made resorting them easier. We would just resort the input data and transition to the new positions.</p>
 
 <p>With CSS handling the positions, it would be a lot of work to go back and add this functionality. If this was a list, it might be a perfect case for <a href="http://flowingdata.com/2014/09/22/how-to-make-an-animated-self-sorting-list/">FlowingData's animated sorting list</a>, but a two dimensional grid of plots makes things more complicated.</p>
 
-<p>Fortunately, there is a great library that can handle all these details for us: <a href="http://isotope.metafizzy.co/">Isotope JS</a>.</p>
+<p>But there is hope! On top of being scrubbable, ProPublica's <a href="https://projects.propublica.org/graphics/ambulances">ambulance visualization</a> provides their user with the ability to resort the small multiples in different ways. We can use the same methodology to make our small multiples sortable too!</p>
 
-<p>Isotope is made to take care of the positioning of html elements into nice looking grids. The API is easy to understand, and you can easily provide it different sorting functions - which is the piece we will use here. Let's add some basic isotope action now.</p>
+<p>They do this using a great library that can handle all these details for us: <a href="http://isotope.metafizzy.co/">Isotope JS</a>.</p>
+
+<p>Isotope is made to take care of the positioning of html elements into nice looking grids. The <a href="http://isotope.metafizzy.co/options.html">API</a> is easy to understand, and you can easily provide it different sorting functions - which is the piece we will use here. Let's add some basic isotope action now.</p>
 
 <p>After our plots have been created, we initialize the isotope library.</p>
 
@@ -662,7 +686,7 @@ In short, we use <code>bisect</code> to get the index into the <code>values</cod
 
     data = transformData(rawData)
     plotData("#vis", data, plot)
-    setupIsoytpe()
+    setupIsoytpe() # <- here
 [/sourcecode]
 <br />
 </code></pre>
@@ -701,4 +725,6 @@ setupIsoytpe = () ->
 
 <h3>Wrapping Up</h3>
 
-<p></p>
+<p>Small multiples are already a powerful tool for anyone working with data. With the right interactions, we can engage the viewers more, and bring out insights and details that would be obscured otherwise.</p>
+
+<p>This tutorial should be your starting point for getting these interactions right. Now go out there and link some small multiples together!</p>
