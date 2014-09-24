@@ -273,6 +273,28 @@ plotData = (selector, data, plot) ->
     .call(plot)
 
 # ---
+# Isotype is used as a fun and easy way to
+# implement reordering of the div's based
+# on different sort orders.
+# ---
+setupIsoytpe = () ->
+  $("#vis").isotope({
+    itemSelector: '.chart',
+    layoutMode: 'fitRows',
+    getSortData: {
+      count: (e) ->
+        d = d3.select(e).datum()
+        sum = d3.sum(d.values, (d) -> d.n)
+        sum * -1
+      name: (e) ->
+        d = d3.select(e).datum()
+        d.key
+    }
+  })
+
+  $("#vis").isotope({sortBy:'count'})
+
+# ---
 # jQuery document ready.
 # ---
 $ ->
@@ -290,6 +312,7 @@ $ ->
 
     data = transformData(rawData)
     plotData("#vis", data, plot)
+    setupIsoytpe()
 
   # I've started using Bostock's queue to load data.
   # The tool allows you to easily add more input files
@@ -299,4 +322,11 @@ $ ->
   queue()
     .defer(d3.tsv, "data/askmefi_category_year.tsv")
     .await(display)
+
+  d3.select("#button-wrap").selectAll("div").on "click", () ->
+    id = d3.select(this).attr("id")
+    d3.select("#button-wrap").selectAll("div").classed("active", false)
+    d3.select("##{id}").classed("active", true)
+    $("#vis").isotope({sortBy:id})
+
 
