@@ -185,6 +185,10 @@ SmallMultiples = () ->
     mousemove.call(this)
 
   # ---
+  # Here is where the bulk of the interaction code lives.
+  # When mouse moves, we want to grab the current year
+  # the mouse is over. Then we want to pull out that
+  # year's count from each of the data element's values.
   # ---
   mousemove = () ->
     year = xScale.invert(d3.mouse(this)[0]).getFullYear()
@@ -210,7 +214,7 @@ SmallMultiples = () ->
 
   # ---
   # When viewer moves mouse out of plot, hide
-  # circle and annotations while showing 
+  # circle and annotations while showing
   # the x axis labels
   # ---
   mouseout = () ->

@@ -5,6 +5,12 @@ title: Linked Interactive Small Multiples
 
 <h1>Linked Interactive Small Multiples</h1>
 
+<div class="button-link">
+  <a href="./linked_small_multiples/">Demo</a>
+</div>
+<br/><br/>
+<div class="clearfix"></div>
+
 <p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate chart to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data. A chorus of little stories that can help tell a bigger one.</p>
 
 <p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting</a> (which is when some data is obscured or occluded because there are too many things being plotted). Compared to animation, small multiples present all of the data at once which makes it easier for viewers to naturally compare each facet with others instead of trying to flip back and forth between views.</p>
@@ -12,9 +18,9 @@ title: Linked Interactive Small Multiples
 <p>FlowingData has covered small multiples and their uses many times over. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
 
 <p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right?</span>
-But even with this content around small multiples, a visualization as versatile as this has plenty more to give.</p>
+But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>.</p>
 
-<p>In this tutorial we are going to take another look at interactive small multiples and explore more possibilities available when we bring this visual to the web.</p>
+<p>In this tutorial we are going to take another look at small multiples and explore more possibilities available to us when we layer on some functional interactions.</p>
 
 <p>Specially, I'd like to talk about <strong>linked</strong> small multiples. Here, all the plots in the small multiple are connected in some way through how they respond to user interactions.</p>
 
@@ -106,31 +112,32 @@ I did find a demonstration from Mike Bostock of a scrubbable + highlightable int
 
 <p>First, you are going to want to check the python version you have:</p>
 
-<pre>
+<pre><code class="language-bash">
   [sourcecode language="bash"]
   python --version
   [/sourcecode]
   <br />
-</pre>
+</code></pre>
 
 <p>If it is <strong>python 2.x</strong>, you can run the web server with the command:</p>
-<pre>
+
+<pre><code class="language-bash">
   [sourcecode language="bash"]
   # start web server with python 2
   python -m SimpleHTTPServer
   [/sourcecode]
   <br />
-</pre>
+</code></pre>
 
 <p>If it is <strong>python 3.x</strong>, the syntax is a bit different:</p>
 
-<pre>
+<pre><code class="language-bash">
   [sourcecode language="bash"]
   # start web server with python 3
   python -m http.server
   [/sourcecode]
   <br />
-</pre>
+</code></pre>
 
 <p>Once you have the server running in the code's directory, you should be able to open up <a href="http://0.0.0.0:8000">http://0.0.0.0:8000</a> in your web browser and see the visualization.</p>
 
@@ -156,7 +163,7 @@ If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier 
 
 <p>We are going to load the data with Mike Bostock's <a href="https://github.com/mbostock/queue">queue library</a>, which makes it easy if we need to load multiple datasets in at one time. Its a bit overkill here, but useful to know about.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 queue()
   .defer(d3.tsv, "data/askmefi_category_year.tsv")
@@ -164,11 +171,11 @@ queue()
 [/sourcecode]
 <br />
 
-</pre>
+</code></pre>
 
 <p>See, easy right? This will call the <code>display</code> function once the data is loaded. Inside <code>display</code>, we will call <code>transformData</code> and then send the data up to be visualized. The <code>transformData</code> function uses <a href="https://github.com/mbostock/d3/wiki/Arrays#d3_nest">d3.nest</a> to group the data by category.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 # ---
 # Convert the raw input data into the format
@@ -186,11 +193,13 @@ transformData = (rawData) ->
   nest
 [/sourcecode]
 <br />
-</pre>
+
+</code></pre>
 
 <p>The important thing to remember about the output from <code>nest</code> is that it is... well nested. Our original data looks something like this:</p>
 
-<pre>
+<pre><code class="language-bash">
+[sourcecode language="bash"]
 "year"	"category"	"n"
 "2004"	"clothing, beauty, & fashion"	141
 "2004"	"computers & internet"	2489
@@ -201,11 +210,13 @@ transformData = (rawData) ->
 "2005"	"food & drink"	324
 "2005"	"grab bag"	248
 "2005"	"health & fitness"	590
-</pre>
+[/sourcecode]
+</code></pre>
 
 <p>The nesting transformation makes it look something like:</p>
 
-<pre>
+<pre><code class="language-javascript">
+[sourcecode language="javascript"]
 [
   {"key":"clothing, beauty, & fashion",
    "values":
@@ -217,7 +228,7 @@ transformData = (rawData) ->
   },
   ...
 ]
-</pre>
+</code></pre>
 
 <p>Each nested entry has a <code>key</code> (our categories), and an array of <code>values</code> (our counts per year). I some times find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or inner the nested one. To help clear up the confusion (I hope) I've used the variable <code>c</code> when we are looking at an outer category level data, and <code>d</code> when we are dealing with an element inside of <code>values</code>.</p>
 
@@ -227,7 +238,7 @@ transformData = (rawData) ->
 
 <p>To create these, first we bind the data to a <code>div</code> selection, and then we create a SVG element inside of a div for each element in our data array. We are going to also create a rectangle inside each SVG that will be used to capture mouse events.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 
   # variables accessible to
@@ -269,8 +280,9 @@ transformData = (rawData) ->
         .attr("width", width + margin.right )
         .attr("height", height)
 
+[/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>
 <span class="tip">If it would at all be useful or sensible to create 1000's of plots is something you might have an opinion about. I'm just saying it could be done easily.</span>
@@ -278,7 +290,7 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 
 <p>To get these plots to sit next to one another, we need to add a bit of CSS to have the <code>.chart</code> divs float to the left:</p>
 
-<pre>
+<pre><code class="language-css">
 [sourcecode language="css"]
 .chart {
   float: left;
@@ -289,7 +301,7 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 }
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>With just this bit of code, we should start to see something. Because we haven't styled our background rectangle, they should appear black:</p>
 
@@ -297,20 +309,20 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 
 <p>Ugly, but we are on the right track. A separate spot for each chart is ready and waiting. We just have to fill in the details. But first, we should hide that background rectangle: </p>
 
-<pre>
+<pre><code class="language-css">
 [sourcecode language="css"]
 .background {
   fill: none;
 }
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <h3>Lines and Titles</h3>
 
 <p>Before we turn to the interactions, we first need to get the visualization looking good. Using <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#line">d3.svg.line()</a> and <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#area">d3.svg.area()</a> to make some nice looking area charts. First, define these generators as well as the scales they will be using to build the paths.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 
   # These accessor functions are defined to
@@ -336,13 +348,13 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
 
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>As mentioned above, these functions will be working with elements inside of the nested <code>values</code> array, and so I've used <code>d</code> as the variable name to try to indicate that.</p>
 
 <p>For these scales to work, we have to set their input <a href="https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear_domain">domains</a>. For the <code>xScale</code>, we can just use the min and max dates. For the <code>yScale</code>, I've bumped up the maximum y value a bit, so the tallest chart doesn't hit the top of the area. Here is the function that is used to set these domains.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   # ---
   # Sets the domain for our x and y scales.
@@ -358,11 +370,11 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
     xScale.domain(extentX)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>Inside of our chart 'constructor' function, we can use these generators to make paths for each plot:</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 
   chart = (selection) ->
@@ -386,13 +398,13 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
         .attr("d", (c) -> line(c.values))
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>And again, our SVG elements each are bound to a specific category level entry. So I've used <code>c</code> to indicate that. The <code>pointer-events: none</code> prevent these elements from grabbing mouse events that I want to hit the background rectangle. There are probably other ways to do this (like draw the rectangle on top of the other elements), but I don't mind being explicit about who should see what when it comes to user interactions. </p> 
 
 <p>While we are here, we can add category name label, as well as the start and end year labels.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
       lines.append("text")
         .attr("class", "title")
@@ -421,11 +433,11 @@ The div element's are bound to <code>data</code>, so each div and SVG combo will
         .text((c) -> xValue(c.values[c.values.length - 1]).getFullYear())
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>A bit of CSS and our visualization comes to life!</p>
 
-<pre>
+<pre><code class="language-css">
 [sourcecode language="css"]
 svg {
   font-size: 10px;
@@ -446,7 +458,7 @@ svg {
 }
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <img src="img/lines.png"/>
 
@@ -454,7 +466,7 @@ svg {
 
 <p>We've opted for a casual labelling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define yourself a axis generator.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   yAxis = d3.svg.axis()
     .scale(yScale)
@@ -464,20 +476,20 @@ svg {
     .tickSize(-width)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way <a href="">the Upshot</a> likes to do.</p>
 
 <p>Now we just call the axis generator on a new div at the end of the constructor: </p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
       g.append("g")
         .attr("class", "y axis")
         .call(yAxis)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>Couldn't be easier.</p>
 
@@ -489,7 +501,7 @@ svg {
 
 <p>The visual elements that will change as the user scrubs over a plot are a circle, a year label, and a value label. As there is one of each for each plot, we can add them in the constructor, keeping them initially hidden.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
       circle = lines.append("circle")
         .attr("r", 2.2)
@@ -510,11 +522,17 @@ svg {
         .attr("y", height)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
-<p>The circle has a opacity of 0, and the two text elements have no text, keeping them out of sight. As we create these elements, we can assign the attributes that won't change during interaction. This includes the radius for the circle, and the y position for the year text. The three variables <code>circle</code>, <code>caption</code>, and <code>curYear</code> are created outside of the constructor's scope so that they will be accessible to other functions. Specifically, the mouse-related functions that will be called when the user interacts with the background rectangle. We need to augment the creation of the rectangle element to add these functions.</p>
+<p>The circle has a opacity of <code>0</code>, and the two text elements have no text, keeping them out of sight.</p> 
 
-<pre>
+<p>As we create these elements, we can also assign the attributes that won't change during the interactions. This includes the radius for the circle, and the y position for the year text.</p>
+
+<p>The three variables <code>circle</code>, <code>caption</code>, and <code>curYear</code> are created outside of the constructor's scope so that they will be accessible to other functions. Specifically, the mouse-related functions that will be called when the user interacts with the background rectangle.</p>
+
+<p>Next, we augment the creation of the rectangle element to add these functions.</p>
+
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
       g.append("rect")
         .attr("class", "background")
@@ -526,11 +544,11 @@ svg {
         .on("mouseout", mouseout)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>So what do these functions do? Let's start with the easy ones - <code>mouseover</code> and <code>mouseout</code>. When a viewer interacts with one of the plots, we want the circle to be visible. We also want to hide the x axis labels, to make room for our "current year" display.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   mouseover = () ->
     circle.attr("opacity", 1.0)
@@ -538,13 +556,13 @@ svg {
     mousemove.call(this)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
-<p>The class <code>.hidden</code> Just sets the opacity to zero for the elements it is assigned to. We could have set that manually for the <code>.static_year</code> elements, but I wanted to show a slight variant on how this could be accomplished.</p>
+<p>The class <code>.hidden</code> just sets its elements opacity to zero. We could have set that manually for the <code>.static_year</code> elements, but I wanted to show a slight variant on how this could be accomplished.</p>
 
 <p>For <code>mouseout</code>, we want to reverse this process. We also want our scrubbable text labels to disappear as well.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   mouseout = () ->
     d3.selectAll(".static_year").classed("hidden", false)
@@ -553,20 +571,20 @@ svg {
     curYear.text("")
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>Now, we just need to deal with <code>mousemove</code>.</p>
 
 <p>First, we want to find the year that the mouse is currently hovering over. We can do this using D3's <a href="https://github.com/mbostock/d3/wiki/Time-Scales#invert">scale.invert()</a> function which returns the value from the input domain given a value from the output range. We can use the mouse's x position to get the value along the x axis to invert.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   mousemove = () ->
     year = xScale.invert(d3.mouse(this)[0]).getFullYear()
     date = format.parse('' + year)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>
 <span class="tip">If you had daily or monthly data, then you probably wouldn't need to do this rounding.</span>
@@ -576,16 +594,16 @@ I am also doing a bit of extra work to round to the nearest first of the year. A
 
 <p>Bisect is meant to find an insertion location for a new element in a sorted list. As such, it can tell us the position of the element with this date element in it. To create a <code>bisect</code> function that knows how to search our specific object array, we use <a href="https://github.com/mbostock/d3/wiki/Arrays#d3_bisector">d3.bisector</a>.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   bisect = d3.bisector((d) -> d.date).left
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>This returns a bisect function that will look at the <code>date</code> attribute of the objects in an array. Now we can use this function to find the corresponding count for that year in all our plots. The full <code>mousemove</code> is below:</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   mousemove = () ->
     year = xScale.invert(d3.mouse(this)[0]).getFullYear()
@@ -610,7 +628,7 @@ I am also doing a bit of extra work to round to the nearest first of the year. A
       .text(year)
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>
 <span class="tip">This code and understanding largely borrowed from Bostock's Tax Burden visualization, referenced above. You might have an easier way to do things.</span>
@@ -636,7 +654,7 @@ In short, we use <code>bisect</code> to get the index into the <code>values</cod
 
 <p>After our plots have been created, we initialize the isotope library.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
   display = (error, rawData) ->
     if error
@@ -647,10 +665,11 @@ In short, we use <code>bisect</code> to get the index into the <code>values</cod
     setupIsoytpe()
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
+<p>Isotope needs the type of div to sort, as well as the sorting functions.</p>
 
-<pre>
+<pre><code class="language-javascript">
 [sourcecode language="javascript"]
 setupIsoytpe = () ->
   $("#vis").isotope({
@@ -670,27 +689,16 @@ setupIsoytpe = () ->
   $("#vis").isotope({sortBy:'count'})
 [/sourcecode]
 <br />
-</pre>
+</code></pre>
 
 <p>This tells isotope to reorder the <code>.chart</code> elements inside of the <code>#vis</code> div. we provide two sort orders: aggregate count and category name.</p>
 
 <p>The cool thing about D3 is that we can easily get to the data bound to each chart using the <code>datum()</code> function. So even though this is not D3 code, we can still use our data to determine the sort.</p>
 
-<p>When the user binds to </p>
+<p>When the user clicks on one of the sort links, Isotope is updated to use that sorting function, and the grid locks into position.</p>
 
 <p>Isotope is free for personal and open source use, with a pretty reasonable commercial license. If you want a completely free option, you might check out <a href="http://razorjack.net/quicksand/index.html">Quicksand</a> or <a href="http://vestride.github.io/Shuffle/">Suffle</a>.</p>
 
+<h3>Wrapping Up</h3>
 
-
-<pre>
-[sourcecode language="javascript"]
-something <- function()
-blah blah blah
-yabba = dabba + 1
-oink poink
-return poo
-[/sourcecode]
-<br />
-</pre>
-
-625px wide
+<p></p>
