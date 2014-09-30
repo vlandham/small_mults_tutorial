@@ -22,7 +22,7 @@ title: Linked Interactive Small Multiples
 <p>FlowingData has covered small multiples, and their uses, a few times already. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
 
 <p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right??</span>
-But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>, so its worth a revisit.</p>
+But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>. And after you read this <a href="http://www.propublica.org/nerds/item/a-big-article-about-wee-things">amazing compilation on wee things</a> by Lena Groeger, you'll be excited about all the possibilities small multiples provide. So they are worth a revisit.</p>
 
 <p>In this tutorial we are going to take another look at small multiples and explore the possibilities available to us when we layer on some interactions.</p>
 
@@ -73,7 +73,7 @@ I've broken down the domain of linked small multiples into four types of interac
 
 <p>Here, part or all of the visualization is highlighted to bring a visual element to the forefront for comparison, or connect the plots in some way.</p>
 
-<p>In the Upshot's <a href="http://www.nytimes.com/2014/04/23/upshot/the-american-middle-class-is-no-longer-the-worlds-richest.html?abt=0002&abg=1">look at the American middle class</a>, they provide a wonderful small multiple to compare the US with other countries. You can mouse over one of the lines to highlight that country's data in each of the plots.</p>
+<p>In the Upshot's <a href="http://www.nytimes.com/2014/04/23/upshot/the-american-middle-class-is-no-longer-the-worlds-richest.html?abt=0002&abg=1">look at the American middle class</a>, the team has created a wonderful small multiple to compare the US with other countries. You can mouse over one of the lines to highlight that country's data in each of the plots.</p>
 
 <img src="img/middle_class.png">
 
@@ -716,7 +716,7 @@ setupIsoytpe = () ->
 <br />
 </code></pre>
 
-<p>This tells isotope to reorder the <code>.chart</code> elements inside of the <code>#vis</code> div. we provide two sort orders: aggregate count and category name.</p>
+<p>This tells isotope to reorder the <code>.chart</code> elements inside of the <code>#vis</code> div. We implement two sort orders: aggregate count and category name.</p>
 
 <p>The great thing about D3 is that we can easily get to the data bound to each chart using the <code>datum()</code> function. So even though this is not D3 code, we can still use our data to determine the sort.</p>
 
