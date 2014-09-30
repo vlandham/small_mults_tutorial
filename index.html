@@ -13,22 +13,22 @@ title: Linked Interactive Small Multiples
 
 <p>Small multiples should be a familiar visualization technique for most FlowingData readers. The key idea is to slice up your data and use a separate plot to visualize each slice. The end result is a grid of charts that all follow the same visual format, but show different pieces of the data.</p> 
 
-<p>A chorus of little stories to help tell a bigger one.</p>
+<p>Essentially, a chorus of little stories to help tell a bigger one.</p>
 
-<p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting (pdf)</a>, (which is when some data is obscured or occluded because there are too many things being plotted).</p> 
+<p>While the concept is simple, the benefits can be significant. Compared to a single larger chart, small multiples can help with <a href="http://www.perceptualedge.com/articles/visual_business_intelligence/over-plotting_in_graphs.pdf">overplotting (pdf)</a>, (when data is obscured or occluded because there are too many items being plotted).</p> 
 
-<p>Compared to animation, small multiples present all of the data at once which makes it easier for viewers to naturally compare each facet with others instead of trying to flip back and forth between views.</p>
+<p>Compared to animation, small multiples present all of the data at once making it easier for viewers to naturally compare each facet with others, instead of trying to flip back and forth between views.</p>
 
-<p>FlowingData has covered small multiples and their uses a few times already. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
+<p>FlowingData has covered small multiples, and their uses, a few times already. We have used R to make <a href="http://flowingdata.com/2013/04/29/small-multiples-in-r/">small multiple bar charts</a> and <a href="http://flowingdata.com/2013/07/08/small-maps-and-grids/">gridded maps</a>. We have even seen an <a href="http://flowingdata.com/2012/01/05/build-interactive-time-series-charts-with-filters/">implementation of area charts</a> that used D3 and provided some interactive capabilities in the form of filtering (which I'll get back to).</p>
 
-<p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right?</span>
+<p><span class="tip">Tufte and Few have written pages and pages on small multiples - so I can write another tutorial, right??</span>
 But even with this content around small multiples, a visualization as versatile as this has plenty more to give. As Stephanie Evergreen points out, it can be <a href="http://stephanieevergreen.com/declutter-dataviz-with-small-multiples/">the perfect way to declutter your data</a>, so its worth a revisit.</p>
 
 <p>In this tutorial we are going to take another look at small multiples and explore the possibilities available to us when we layer on some interactions.</p>
 
 <p>Specially, I'd like to talk about <strong>linked</strong> small multiples. Here, all the plots in the small multiple are connected in some way through how they respond to user interaction.</p>
 
-<p>Before we get started, it might be valuable to look at some successful examples of linked small multiples out there to get a sense for what kind of interactions are possible, and how they are getting used.</p>
+<p>Before we get started, it might be valuable to look at some successful examples of linked small multiples to get a sense for what kind of interactions are possible, and how they are getting used.</p>
 
 <h2>Examples of Linked Small Multiple</h2>
 
@@ -50,23 +50,24 @@ I've broken down the domain of linked small multiples into four types of interac
 
 <h3>Updateable</h3>
 
-<p>This is a common approach where the data is filtered or processed in some way and then the small multiples are updated to reflect this new data. The FlowingData visualization <a href="http://projects.flowingdata.com/timeuse/">How Americans Spend Their Day</a>, that served as the demo for the last D3 small multiples tutorial, is updateable. The filters update the plots with different subsets of the data to provide a greater exploration experience.</p>
+<p>This is a common approach where the data is filtered or processed in some way, and then the small multiples are updated to reflect this new data. The FlowingData visualization <a href="http://projects.flowingdata.com/timeuse/">How Americans Spend Their Day</a>, that served as the demo for the last D3 small multiples tutorial, is updateable. The filters update the plots with different subsets of the data to provide a greater exploration experience.</p>
 
 <img src="img/timeuse.png">
 
 <p>Another Great example of an updateable small multiple is part of a <a href="http://githut.info/">GitHut</a>, a visualization of programming language popularity on Github.</p> 
 
+<p>Here, you can toggle between repository count and percent of total for each language, providing both absolute and relative metrics to compare.</p>
+
 <img src="img/githut.png">
 
-<p>Here, you can toggle between repository count and percent of total for each language, providing both absolute and relative metrics to compare.</p>
 
 <h3>Sortable</h3>
 
-<p>With sortable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer pick out different patterns in the data.</p>
+<p>With sortable small multiples, interactions cause the positions of the individual plots to move. Sorting in different ways allows the viewer to pick out different patterns in the data.</p>
+
+<p>Still one of my favorite interactive small multiples, <a href="http://13pt.com/">Jonathan Corum's</a> always updating <a href="">Kepler's Tally of Planets</a>, allows the viewer to reorder by discovery date or system size. This gives the viewer a historical perspective, as well as one that highlights the incredible diversity in the systems.</p>
 
 <img src="img/kepler.png">
-
-<p>Still one of my favorite interactive small multiples, <a href="http://13pt.com/">Jonathan Corum's</a> always updating <a href="">Kepler's Tally of Planets</a> allows the viewer to reorder by discovery date or system size. This gives the viewer a historical perspective, as well as one that highlights the incredible diversity in the systems.</p>
 
 <h3>Highlightable</h3>
 
@@ -78,9 +79,9 @@ I've broken down the domain of linked small multiples into four types of interac
 
 <p>And recently, the Financial Times has provided an interesting twist on this idea in their <a href="http://blogs.ft.com/ftdata/2014/08/29/eu-unemployment-tracker/">EU unemployment tracker</a>.
 
-<img src="img/eu_tracker.png"/>
+<p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country to link the sections together. Nice!</p>
 
-<p>They show sets of small multiples for different metrics for each country, ordered by greatest to least for that metric. While this may break the purist form of small multiples, they also make the plots highlightable where that country's data is highlighted for each metric. With this format, you can easily read it worst to best (in terms of unemployment), but then also highlight a specific country and drill in. Nice!</p>
+<img src="img/eu_tracker.png"/>
 
 <h3>Scrubbable</h3>
 
@@ -114,7 +115,7 @@ I did find a demonstration from Mike Bostock of a scrubbable + highlightable int
 
 <p>Many of these interactions could be used together to make even more interesting interactions, and that's what we are going to try in this tutorial. Let's start with a basic small multiples built in <a href="http://d3js.org/">D3.js</a> and then add in some of these interactions to see how they work.</p>
 
-<p>You can <a href="">download the code</a> and follow along as we build up the visualization. It is again written in <a href="http://coffeescript.org/">CoffeeScript</a>, but I've also compiled it into straight JavaScript and saved that off - in case you don't want to give CoffeeScript a try.</p>
+<p>You can <a href="">download the code</a> and follow along as we build up the visualization. It is again written in <a href="http://coffeescript.org/">CoffeeScript</a>, but I've also compiled it into JavaScript as part of the downloadable code - in case you don't want to give CoffeeScript a try.</p>
 
 <p>If you have python installed (and if you are on a Mac or Linux box, you should have python by default), you can open up the code directory in your Terminal and run python's simple http server.</p>
 
@@ -157,7 +158,7 @@ If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier 
 
 <p>
 <span class="tip">Don't get me wrong - I love S.O. but the rule system can be a bit of a downer.</span>
-<a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but to my knowledge, it is one of the oldest that is still ticking. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. I've got a soft spot for Ask MetaFilter. It is one of the few websites I can still remember perusing for fun back in college just to discover something new (I guess my chosen coursework was insufficient for knowledge acquisition. I probably should have to a better school).</p>
+<a href="">Ask MetaFilter</a> may not be the most well known question-based forums on the web, but to my knowledge, it is one of the oldest that is still ticking. It has a structure similar to Stack Overflow or Quora, but without the regulations or pretensions of either. I've got a soft spot for Ask MetaFilter. It is one of the few websites I can still remember perusing for fun back in college just to discover something new (I guess my chosen coursework was insufficient for knowledge acquisition. I probably should have taken more challenging coursework).</p>
 
 <p>Recently, a very honest article appeared on Medium about the <a href="https://medium.com/technology-musings/on-the-future-of-metafilter-941d15ec96f0">uncertain future of MetaFilter</a>. While a bit sad, it got me wondering if people still use Ask MetaFilter today, and how interaction with the site has changed over the years.</p>
 
@@ -169,7 +170,7 @@ If you are on a Windows machine, I'm terribly sorry for you. But, Jerome Cukier 
 
 <h3>Loading and Transforming</h3>
 
-<p>First, the easiest part of any D3 project - loading the data. Well, the loading part is easy, but some times getting it into the format you want after you load it can be a bit of a pain.</p>
+<p>First, the easiest part of any D3 project - loading the data. Well, the loading part is easy, but sometimes getting it into the format you want after you load it can be a bit of a pain.</p>
 
 <p>We are going to load the data with Mike Bostock's <a href="https://github.com/mbostock/queue">queue library</a>, which makes it easy if we need to load multiple datasets in at one time. Its a bit overkill here, but useful to know about.</p>
 
@@ -183,7 +184,7 @@ queue()
 
 </code></pre>
 
-<p>See, easy right? This will call the <code>display</code> function once the data is loaded. Inside <code>display</code>, we will call <code>transformData</code> and then send the data up to be visualized. The <code>transformData</code> function uses <a href="https://github.com/mbostock/d3/wiki/Arrays#d3_nest">d3.nest</a> to group the data by category.</p>
+<p>See, easy. Right? This will call the <code>display</code> function once the data is loaded. Inside <code>display</code>, we will call <code>transformData</code> and then send the data up to be visualized. The <code>transformData</code> function uses <a href="https://github.com/mbostock/d3/wiki/Arrays#d3_nest">d3.nest</a> to group the data by category.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -242,7 +243,7 @@ transformData = (rawData) ->
 
 <p>Each nested entry has a <code>key</code> (our categories), and an array of <code>values</code> (our counts per year).</p>
 
-<p>I some times find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or inner the nested one.</p>
+<p>I sometimes find it confusing to remember in D3 if in a particular function I'm working with the outer data element, or the inner nested one.</p>
 
 <p>
 <span class="tip">c for 'category', d for 'data'. Or just c comes before d and so d data is nested inside c.</span>
@@ -487,7 +488,7 @@ svg {
 
 <h3>An Axis for Each Multiple</h3>
 
-<p>We've opted for a casual labelling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define an axis generator to use.</p>
+<p>We've opted for a casual labeling of the year along the x axis, but what about the y? Let's get an axis in there too! Up top, define an axis generator to use.</p>
 
 <pre><code class="language-javascript">
 [sourcecode language="javascript"]
@@ -501,7 +502,7 @@ svg {
 <br />
 </code></pre>
 
-<p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way the Upshot likes to do.</p>
+<p>Using a <code>tickSize</code> of <code>-width</code> is a fun hack to allow the tick lines to span across the plots, the way the <a href="http://www.nytimes.com/2014/08/02/upshot/five-charts-that-explain-the-jobs-report.html?abt=0002&abg=1">Upshot likes to do</a>.</p>
 
 <p>Now we just call the axis generator on a new div at the end of the constructor:</p>
 
@@ -661,7 +662,7 @@ In short, we use <code>bisect</code> to get the index into the <code>values</cod
 
 <h3>Sorting made Simple</h3>
 
-<p>Ok. Now we have a set of small multiples linked together with a scrub able interaction to provide a deeper experience for the viewer.</p>
+<p>Ok. Now we have a set of small multiples linked together with a scrubbable interaction to provide a deeper experience for the viewer.</p>
 
 <p>But what about the sort order? Typically, small multiples should be ordered by a meaningful variable. Right now that isn't really the case for our example.</p>
 
@@ -717,7 +718,7 @@ setupIsoytpe = () ->
 
 <p>This tells isotope to reorder the <code>.chart</code> elements inside of the <code>#vis</code> div. we provide two sort orders: aggregate count and category name.</p>
 
-<p>The cool thing about D3 is that we can easily get to the data bound to each chart using the <code>datum()</code> function. So even though this is not D3 code, we can still use our data to determine the sort.</p>
+<p>The great thing about D3 is that we can easily get to the data bound to each chart using the <code>datum()</code> function. So even though this is not D3 code, we can still use our data to determine the sort.</p>
 
 <p>When the user clicks on one of the sort links, Isotope is updated to use that sorting function, and the grid locks into position.</p>
 
